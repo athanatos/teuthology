@@ -3,8 +3,10 @@ kernel:
   branch: master
 overrides:
   ceph:
-    branch: BRANCH_NAME
+    conf:
+      osd:
+        debug osd : 25
+        debug filestore : 25
+    branch: wip_backfill_for_qa_suite
     log-whitelist:
     - 'clocks not synchronized'
-tasks:
-- chef:
