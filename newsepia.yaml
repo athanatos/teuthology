@@ -1,7 +1,7 @@
 check-locks: false
 interactive-on-error: true
 targets:
-  ubuntu@plana20.front.sepia.ceph.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCTOtP9gi/aNpDRqdqM4TFzZq2yJINUykKyW+2qZKFj7a6ef28vVmxC/0y8OfeaY5gUGd7ch+Kxs0tnq2wSkFUY7ZjywVk4WWm9kFr4iUTKU9oQ3HLLoSzGZEINCpLZ/zYyzS13M8+6tIpmeWRrgOwJgOOkhweyFr7VOk2QiHu7gX/Ivitg/wWDz9gnpucPAkXtgZfG0siq8VeEDEmz/s+x6PqnnY4JdeCtWHH4kMzrlV+lu0Q7/EJwYQKCw4m3jHYtFMIkNRJE+NgYC/9Eog2a5ia2P4h6ASJgkEejcr/0q/IuKBamlpvaUVTwIWh5I4H6vVT6pd0q2MQoibgViUzh
+#  ubuntu@plana20.front.sepia.ceph.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCTOtP9gi/aNpDRqdqM4TFzZq2yJINUykKyW+2qZKFj7a6ef28vVmxC/0y8OfeaY5gUGd7ch+Kxs0tnq2wSkFUY7ZjywVk4WWm9kFr4iUTKU9oQ3HLLoSzGZEINCpLZ/zYyzS13M8+6tIpmeWRrgOwJgOOkhweyFr7VOk2QiHu7gX/Ivitg/wWDz9gnpucPAkXtgZfG0siq8VeEDEmz/s+x6PqnnY4JdeCtWHH4kMzrlV+lu0Q7/EJwYQKCw4m3jHYtFMIkNRJE+NgYC/9Eog2a5ia2P4h6ASJgkEejcr/0q/IuKBamlpvaUVTwIWh5I4H6vVT6pd0q2MQoibgViUzh
   ubuntu@plana21.front.sepia.ceph.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzdM8rRVNhVglcwzMu7GucHCj0p9iRANyuAPCM1DD6hnc6oUKEND6ZWSkpAKtUdwXIdkS1OOPw/sf0mqN1UZhNS+8rspph1vo2ZhjTUnPi2UPaRp2yKkdYeEHbWz4zU+74Mt/1gyyjUPhyhjQ31cZiUDMYTm/Ynj2JJK7QfB6E9s+vmmaAOOSJKTpr68SPgXkdwkkaFRVTTNMjhAwbWJ3jmI3pBjB5q7M4ND/ViOlU4EOVRVcI/3Ug/4/tazzEfv+K1M8YFi0SPt1IJpPE9eH6L8V8w08DRVkEXEt72JjZFk/l5PJ3iXCRfY24Av4T4fKYhKZFuiQaDWU5kai8s/a3
   ubuntu@plana22.front.sepia.ceph.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5SkMait5KrfOPvcUrtAjJ7XSinOTb5cH1i8X7gvqVh3nTkDEYD27z8KVRumrZFa6X5gHTwaBrT6Pe0RYLPyFwirWTfvvnIdr8/3ig8X0OQOQlslEAQhNWR46yn889l6vLZTfHYeWXp0ZhYvEHuf629kuP9YsuK7VhOyO098nqqReILkscfwDuhJrE4zM8ix3d0c8xelaVU1TPaH2799vtNMskDEQYE+Ly2LO4vfJtEAaSiTxM3OIHfexBtPb5zalhBZvDCy34UlXB2nGkiHIqewqJG3fGNIN3gloP1IfFDMqD5LvnnswpdctqHhNQwOMS5OEIAZauBzB0SVwYEmDL
   ubuntu@plana23.front.sepia.ceph.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC1ZCMNnBbf4j3J3/5P9yjJF8DiuXagogbypjPFHQJdXFpTT9hPxDu1qMoO4mb+zK/L5KDB8VMTPazysRby+dk0N0f4GxPULYGX/v1Q7D22hMkq2VeTRroaTPrnR2LGRdUFygkyGud2U7du7nvHvvlpYHEpDB274BdYAKgk3g/q3xmIN59xZIYz3hNOJrp7AJ4mhPVRortbHwUtGqs4wvufF10sknVhvjqsuKPAHXUQ00sU+Baszj6PdltR1v2jOFXGhDjGvHqav0Pc/lz3jYLY2VF1mKGr7B74KC2jhagzcTKQJS/bKvizrEyOASvOueYhBH5zcaomUvih1dOY9tLT
@@ -11,19 +11,22 @@ targets:
   ubuntu@plana27.front.sepia.ceph.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2yv8kFpP02Q8OZgh0bs2bdEB3Hq6u/NmjjWad2n8hVAM055RSXfSCBdlBDzpjk/RdW+7Ff8SoPOLuagmkOXdJBsrDH5ues7NtP+jdsH1slylbUbpdDoRhPOwwBgINLmRdtSvbRV8JZAiG0jejFyIHey5muwZu5iS5Uy4ty1FpKzT6a6h95bHjMToIFnXLWe+5uaWXkpibxMPU607+isRmQB0wOWG3VQZuGOzBO7gX4zlKNEMx367LdGUzf6N7AVQQyv08nvJtYKGh1ukkZGLtLdM9ImaxRIIkefA1aDEvbQ5ZeaEKnWBHHBtaBStiXFFweFWYI9yuGhUBlThQjdVX
   ubuntu@plana28.front.sepia.ceph.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQAg6QApfMNG0uCSpJy9CYriEOFWrSpZQqs+vvfnEnYh/msAvfW514UreAwTf7e5uGjT8PzptUIOtQff2uqEhpmaECxfYuLfnvBDVgX8RZ5Clc4nMk2OTJteLacZaj+J08lWKCBN9SBICiDwXhnYal1p/PfBdo6UxYUBC6QfR4RSpe6ScuPRkb4XpDkwuBeZnCDqfTgEiQHshSfij959IHPKBmYEVC8Kk5y1okKyboMhC1p/kX/thkY88X7Ngn5vkqlg+vhcmiKUpZGgUJEfNKBOOC8gblr7KqRG1HUB5zbpZd7MfUnNVlOX9cwsKqtJZoeQsox6lSLSdA9vpIOUcx
   ubuntu@plana29.front.sepia.ceph.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC41L2qu3kxuddCM3wpskBxF3sSymA+BF90O/SQnDQL0sNLb/m/zcQuuYbed5Vntx5MoW3Xd1CcCTUsOS+8AP+zC7LMVkZi2+mG2oehqx0+jwLFXzxnpu4YXdeGYOAIZbjPf7nDMumSl3oGyLe04Fk3AMXrMsbEnc3XeI+kA51aCTv2B/zGOVMR/w57wzR5vKB9S/Ph+owADlwJIY0LSUc9nNtYk2QI7L5tskqkdw63qnkl/8II97VdTxNExs248dudfVPgdQ6CtXuKrOt9KzBrptjgzZEjELT/8wcEMfEAoUDujko7gYI6L10ldvPlTQ/vrXHSfIo1A/L/Ti/OBUtn
-roles:
-- [mon.0, mds.0, osd.0, client.0]
-- [client.1]
-- [client.2]
-- [client.3]
-- [client.4]
-- [client.5]
-- [client.6]
-- [client.7]
-- [client.8]
-- [client.9]
-tasks:
+#roles:
+#- [mon.0, mds.0, osd.0, client.0]
+#- [client.1]
+#- [client.2]
+#- [client.3]
+#- [client.4]
+#- [client.5]
+#- [client.6]
+#- [client.7]
+#- [client.8]
+#- [client.9]
+#tasks:
+#- ceph:
+#    flavor: oneiric
+#- cfuse: [client.0]
+#- interactive:
+overrides:
 - ceph:
     flavor: oneiric
-- cfuse: [client.0]
-- interactive:
