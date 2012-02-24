@@ -1,0 +1,22 @@
+interactive-on-error: true
+roles:
+- - mon.0
+  - mds.0
+  - osd.0
+- - mon.1
+  - osd.1
+  - client.1
+  - client.0
+- - mon.2
+
+tasks:
+- ceph:
+    conf:
+      osd:
+        debug osd : 25
+        debug filestore : 25
+    path: /home/samuelj/ceph2
+    log-whitelist:
+    - clocks not synchronized
+- rgw: [client.0]
+- s3tests: [client.1]

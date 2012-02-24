@@ -1,0 +1,24 @@
+overrides:
+  ceph:
+    path: /home/samuelj/ceph2
+    conf:
+      osd:
+        debug filestore: 25
+        debug osd: 25
+    log-whitelist:
+    - clocks not synchronized
+roles:
+- - mon.0
+  - mds.0
+  - osd.0
+- - mon.1
+  - osd.1
+- - mon.2
+  - osd.2
+  - client.0
+tasks:
+- ceph: null
+- cfuse: null
+- workunit:
+    client.0:
+        - rados/test.sh

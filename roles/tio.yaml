@@ -1,0 +1,23 @@
+interactive-on-error: true
+roles:
+- - mon.0
+  - mds.0
+  - osd.0
+- - mon.1
+  - osd.1
+- - mon.2
+  - client.0
+
+tasks:
+- ceph:
+    conf:
+      osd:
+        debug osd : 25
+        debug filestore : 25
+    path: /home/samuelj/ceph2
+    log-whitelist:
+    - clocks not synchronized
+- cfuse: null
+- workunit:
+    all:
+    - suites/tiobench.sh

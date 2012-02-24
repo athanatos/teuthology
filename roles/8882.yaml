@@ -1,0 +1,54 @@
+interactive-on-error: true
+roles:
+- - mon.0
+  - osd.0
+  - mon.1
+  - client.2
+- - mon.2
+  - osd.1
+  - client.0
+- - osd.2
+  - client.1
+- - osd.3
+#- - osd.4
+#- - osd.5
+overrides:
+  ceph:
+#    valgrind:
+#       osd.0: [--tool=memcheck]
+#       osd.1: [--tool=memcheck]
+#       osd.2: [--tool=memcheck]
+    #   osd.3: [--tool=memcheck, --leak-check=full]
+    btrfs: 1
+    log-whitelist:
+    - clocks not synchronized
+    path: /home/samuelj/ceph
+    conf:
+      osd:
+        lockdep : false
+        debug osd : 20
+        debug ms : 10
+        debug filestore : 20
+        debug objecter : 20
+        debug client : 20
+#        filestore btrfs snap : 0
+tasks:
+- ceph: null
+- thrashosds:
+    chance_down: 30
+- rados:
+    clients:
+    - client.0
+    - client.1
+    - client.2
+    objects: 100
+    op_weights:
+      write: 100
+      delete: 50
+      read: 100
+      snap_create: 10
+      rollback: 20
+      snap_remove: 8
+      setattr: 100
+      rmattr: 50
+    ops: 400000

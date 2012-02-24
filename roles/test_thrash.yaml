@@ -1,0 +1,28 @@
+targets:
+  ubuntu@sepia86.ceph.dreamhost.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCkZvgqWO166s5F0c1Mu6hUybKvIXYx5Af1IN2aLpz7CRu7xgcXmIPHVIg9aD43iXN8rOob562KouDzp3APbxZGJiyL/3kAs7MXYgoOKFbL63evGVzCpHw5mvA8tqb3vfgFRBnf/JuIxrAQApH8Mvkeev6r8KbOxgZi8PSbdrHjE+4Pz9OXC+9Q32ctKiWbAkPfSblSRkzHcSnj9S3M2+S5M3F2mnbFNWlmXnzFdpOr6QBhSTCInjISw8brchi50v8YKGrO05279lKsBcvYMHJt+b111oGlz/1icBkBU1HTNKUGisT42xCzCh31L8n0M8pTMop/TcCBXJwO/ZBpxAwD
+  ubuntu@sepia87.ceph.dreamhost.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/lUKcLHyg/jID6ptem8sVvLV5E5I3dQnmAvwcKT+NFqDs451YE6uz0GL7nhLyLI6q3zRYIDMJqYQr1AqMrmsGOWZsJ9i2vOUV5DkVGC3m902AIKAMpKeLw3adkuB2mFzl1M6Bb5iGBd1b28pj58h75LcokFDXzbHhBDh39BQ4AQ/PcAr+iuPfwR0Yl2cCxJUvyECc6/cFjk9K6MuW7NCA+rcy7ciwWM+VXczFD3xvP3EQeqmUIkRG9guSrQeUcE25nAkj38xGF5fQWH+FWusflx7ZAEF+9TOo8799FxttLB9407g6zc742JpinwhYcKjxko+s/1A7mM4kOjBZkWm5
+
+#  ubuntu@sepia70.ceph.dreamhost.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfqW2BHv+jQdkQ/MlTh9kQLBkav2GItQKSD3UK4vGjVBSdvi7Mrr4x2aYciA2RmtVNJsyxWN0g9i0w9PObizAUfLtCQYcdoT/RA/cvTr86bwbN70c60k18n1aw8kXZ0EnHMySLGPZuC/M2kBafx5Xl8dpz9YRNFo0yKpFolWTAbfVIF8hbSTTCqAGJN2VKlfOlWx0+F5dmyz1D/gGxDxItWeUr4hih5s0escvG2ztRotfmJzgmSPsQOFDy8y9Qvqb8TUWoRN8YtA4hYff6OuGNo+7hUA+3pbp6+jJ/O+mg3NLF2BcbglqdKqRDGO02VAFFs3mHRrJsiUzzczXdhQob
+#  ubuntu@sepia72.ceph.dreamhost.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnR1IO83zYeoVN0FSbWOC5LmRmg4BwPsQ0KpW1P6WfdTa/bAXiBB5nXFPCxn/9Y7yZgj4sPff6gUE462F7Oi4c5SDkDkzvADgQ3+RREBrKRUTrfU6OkAqPEHA1v9MEFMnJK/F/tvN3w2063TJZczQSKgLLP1NeZRcUlC0QxL/e1OfJDmKlFkIsAZQ49TTfi+eQpILqjTlIgrDp/jMWKQlEDb2wxDCRdw2mjw1LvXTs7P2YZT1hirYU1Nga5QlAKGCKHsgSszun4DgF49xEW/+O3h8PMLCcGPAgzjA3QLbXfsuwqTEzoOQVLBMpDd0Soq3zNU4KmJ6T9dFP8fAq377
+roles:
+- [mon.0, osd.0, client.0]
+- [osd.1, osd.2]
+#kernel:
+#  tag: v3.1-rc7
+interactive-on-error: true
+tasks:
+- ceph:
+#    path: /home/samuelj/ceph2
+#    snaps: True
+#    btrfs: 1
+    conf:
+       osd:
+         debug osd : 25
+#      client:
+#        debug ms: 20
+#        debug objecter: 20
+#        log file: /tmp/cephtest/archive/log/watch.out
+- thrashosds:
+- testrados:
+    clients: [client.0]
+- interactive:

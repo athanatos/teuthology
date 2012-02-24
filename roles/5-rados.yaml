@@ -1,0 +1,22 @@
+targets:
+  ubuntu@sepia10.ceph.dreamhost.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDyYbgdP7eb9dwCokSaXBm6PfZTImBiRxIHEcGIjkPUPVJUa4tamJzkeq/PS6HHBwotCZxMLnne+kjRvUYsNSkUQT/v4FWDYj6IJknxp1DtfP5iZFA7YxGeiGL9K6OeOlMawoQsjlOmJS1DOQV8EiLSE7kq+thmrm/5kvxVI1kOUmAxm5gB0otOc8Mx7+FXfRvXfZtsob0jj+B9tYfkUbyJ6lKo3eGO54rEBseWdDZdo207ojdEOd9aSv2VsaI7Ak2vFiM5eTVDADJwDMDbpQwIUaHa5m2YAGLzkFLMnlGEhItM3r56ABWZKWCVNvFwNM7R+8gg7Wu8UOSMNm/DZj6J
+  ubuntu@sepia13.ceph.dreamhost.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC09AAMWoFaY+jtBMaNQbG4KXASwyeJDrlREflWouSTV614GuKrjByCVBaIDTmKoM2BrIYI9LqlYIsfFoPVRG0w2KPgcodf77hkqU5jmalmSARhZYc7zTvdfeQu8Hh0R+v9Rg/bbAvcvu45UGw/0jslZn11p5AIJc8NNSMJ0WHEWsduVD1qQQtxa3qDQCy5VhCpwD6/IG3VHfCPOWx/w3h9TPuhaSu5DOmb1IKphjjVXFAgeznisJ9S61/tWWje+J9XQMhOU+taBKfTrvSi5ffPmASTRQpZjnezoFWAl9NAVT5O3nylSZdG1ZwOGcfsIxaQU4ahTy+T/fO8hVMaijWl
+#  ubuntu@sepia14.ceph.dreamhost.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC1KJIau5QFIYcI7p815DJSQQI0FTW0vH/FnCywcntxWd179/Z5oTjoX4GXVP/e/aPZBNMt5U/A/d0XxgnP5vVkP5Atfj4n6w8svAu27wkCwVlv3BsIKMfKYObHRgiRZZnVwjFatJmsMsKfKwBPdi/q9jawkldVP5kdU33VMpY7YMFJiXtZA9vYsm6ECDxYem6u7bWqBMqIzWCJJkQRhrZ9ui+CR2jvUCEVldFBRdJOejCmSWdmFnhSj9EBx3l62HZfSd6wIJauelW5HOXt7MAi6R/xvaF5biuAT1eAIeD1HV8pT46UY9ZFGJEJOBz7W8alTKS49DtI4Z8IJM2Waak7
+
+roles:
+- [mon.0, osd.0, client.0]
+- [osd.1, osd.2, client.1]
+tasks:
+- ceph:
+    conf:
+      osd:
+        debug osd : 25
+        debug filestore : 25
+    path: /home/samuelj/ceph
+- thrashosds:
+- testrados:
+    clients: [client.0]
+    time: 360
+    ops: 200000
+    snaps: true
+- interactive:

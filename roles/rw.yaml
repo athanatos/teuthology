@@ -1,0 +1,30 @@
+roles:
+- - mon.0
+  - mds.0
+  - osd.0
+- - mon.1
+  - osd.1
+  - client.1
+- - osd.2
+  - osd.3
+  - client.0
+tasks:
+- ceph:
+    conf:
+      osd:
+        debug osd : 25
+        debug filestore : 25
+        osd scrub max interval: 20
+#    tag: v0.39
+    path: /home/samuelj/ceph4
+    log-whitelist:
+    - clocks not synchronized
+#- thrashosds: null
+- rados:
+    clients: [client.0]
+    ops: 100000
+    objects: 2000
+- radosbench:
+    clients: [client.1]
+    time: 3600
+#    snaps: true
