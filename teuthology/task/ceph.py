@@ -341,7 +341,7 @@ def cluster(ctx, config):
             roles_to_journals = assign_devs(
                 teuthology.roles_of_type(roles_for_host, 'osd'), devs
                 )
-            log.info('journal map: %s', roles_to_journals)
+            log.info('journal map: %s' % (str(roles_to_journals),))
         remote_to_roles_to_devs[remote] = roles_to_devs
         remote_to_roles_to_journals[remote] = roles_to_journals
 
@@ -607,6 +607,16 @@ def cluster(ctx, config):
                     os.path.join('/tmp/cephtest/data', 'osd.{id}.data'.format(id=id_)),
                     ],
                 )
+            if roles_to_journals.get(id_):
+                log.info("id_: {id} in journals: {journ}".format(id=id_, journ=str(roles_to_journals)))
+                log.info(str(remote))
+                args=[
+                    'sudo',
+                    'usermod', 'ubuntu', '-a',
+                    '-G', 'disk']
+		log.info(str(args))
+                remote.run(args=args)
+                remote.run(args=["ls", "-lah", roles_to_journals[id_]])
             if roles_to_devs.get(id_):
                 dev = roles_to_devs[id_]
                 fs = config.get('fs')
@@ -661,6 +671,7 @@ def cluster(ctx, config):
                     )
 
         for id_ in teuthology.roles_of_type(roles_for_host, 'osd'):
+            remote.run(args=["ls", "-lah", roles_to_journals[id_]])
             remote.run(
                 args=[
                     '/tmp/cephtest/enable-coredump',
