@@ -57,7 +57,7 @@ def task(ctx, config):
                 stdin=run.PIPE,
                 wait=False
                 )
-            run.wait(proc)
+            run.wait([proc])
 
         proc = remote.run(
             args=[
@@ -105,4 +105,4 @@ def task(ctx, config):
                 stdin=run.PIPE,
                 wait=False
                 )
-            run.wait(proc)
+            run.wait([proc])

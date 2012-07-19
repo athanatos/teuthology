@@ -44,10 +44,10 @@ def task(ctx, config):
             with radosbench.task(ctx, benchcontext):
                 time.sleep()
             iterations += 1
-    log.info("Starting %s threads"%(str(config.get('segments', 10)),))
+    log.info("Starting %s threads"%(str(config.get('segments', 3)),))
     segments = [
         gevent.spawn(run_one, i) 
-        for i in range(0, int(config.get('segments', 10)))]
+        for i in range(0, int(config.get('segments', 3)))]
 
     try:
         yield
