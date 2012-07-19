@@ -36,18 +36,18 @@ def task(ctx, config):
 
     def run_one(num):
         start = time.time()
-        benchcontext = copy.copy(ctx.get('radosbench'))
+        benchcontext = copy.copy(config.get('radosbench'))
         iterations = 0
-        while time.time() - start > ctx.get('time', 600):
+        while time.time() - start > config.get('time', 600):
             log.info("Starting iteration %s of segment %s"%(iterations, num))
             benchcontext['pool'] = str(num) + "-" + str(iterations)
             with radosbench.task(benchcontext):
                 time.sleep()
             iterations += 1
-    log.info("Starting %s threads"%(ctx.get('segments', 10),))
+    log.info("Starting %s threads"%(config.get('segments', 10),))
     segments = [
         gevent.spawn(run_one, i) 
-        for i in range(0,ctx.get('segments', 10))]
+        for i in range(0, config.get('segments', 10))]
 
     try:
         yield
