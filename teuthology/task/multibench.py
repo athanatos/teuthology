@@ -30,7 +30,7 @@ def task(ctx, config):
         time: 360
     - interactive:
     """
-    log.info('Beginning radosbench...')
+    log.info('Beginning multibench...')
     assert isinstance(config, dict), \
         "please list clients to run on"
 
@@ -38,16 +38,16 @@ def task(ctx, config):
         start = time.time()
         benchcontext = copy.copy(config.get('radosbench'))
         iterations = 0
-        while time.time() - start > config.get('time', 600):
+        while time.time() - start < int(config.get('time', 600)):
             log.info("Starting iteration %s of segment %s"%(iterations, num))
             benchcontext['pool'] = str(num) + "-" + str(iterations)
-            with radosbench.task(benchcontext):
+            with radosbench.task(ctx, benchcontext):
                 time.sleep()
             iterations += 1
-    log.info("Starting %s threads"%(config.get('segments', 10),))
+    log.info("Starting %s threads"%(str(config.get('segments', 10)),))
     segments = [
         gevent.spawn(run_one, i) 
-        for i in range(0, config.get('segments', 10))]
+        for i in range(0, int(config.get('segments', 10)))]
 
     try:
         yield
