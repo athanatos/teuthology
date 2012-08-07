@@ -17,8 +17,8 @@ fi
 
 
 ##
-test ! -d ~/src/ceph-qa-suite && echo "error: expects to find ~/src/ceph-qa-suite" && exit 1
-test ! -d ~/src/teuthology/virtualenv/bin && echo "error: expects to find ~/src/teuthology/virtualenv/bin" && exit 1
+test ! -d ~/ceph-qa-suite && echo "error: expects to find ~/ceph-qa-suite" && exit 1
+test ! -d ~/teuthology/virtualenv/bin && echo "error: expects to find ~/teuthology/virtualenv/bin" && exit 1
 
 ## get sha1
 KERNEL_SHA1=`wget http://gitbuilder.ceph.com/kernel-deb-precise-x86_64-basic/ref/$kernel/sha1 -O- 2>/dev/null`
@@ -57,8 +57,8 @@ fi
 stamp=`date +%Y-%m-%d_%H:%M:%S`
 name=`whoami`"-$stamp-$suite-$ceph-$kernel-$flavor"
 
-~/src/teuthology/virtualenv/bin/teuthology-suite -v $fn \
-    --collections ~/src/ceph-qa-suite/suites/$suite/* \
+~/teuthology/virtualenv/bin/teuthology-suite -v $fn \
+    --collections ~/ceph-qa-suite/suites/$suite/* \
     --email $email \
     --timeout 21600 \
     --name $name

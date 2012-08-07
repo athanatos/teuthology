@@ -471,8 +471,8 @@ def cluster(ctx, config):
                     num=teuthology.num_instances_of_type(ctx.cluster, 'osd'),
                     ),
                 '/tmp/cephtest/osdmap',
-                '--pg_bits', '2',
-                '--pgp_bits', '4',
+                '--pg_bits', '6',
+                '--pgp_bits', '6',
                 ],
             wait=False,
             ),
@@ -631,6 +631,7 @@ def cluster(ctx, config):
                     mkfs.append('-f')
                 if fs == 'ext4' or fs == 'ext3':
                     options.append('user_xattr')
+                    mkfs.append('-F')
 
                 log.info('%s on %s on %s' % (mkfs, dev, remote))
                 if package is not None:
@@ -671,7 +672,6 @@ def cluster(ctx, config):
                     )
 
         for id_ in teuthology.roles_of_type(roles_for_host, 'osd'):
-            remote.run(args=["ls", "-lah", roles_to_journals[id_]])
             remote.run(
                 args=[
                     '/tmp/cephtest/enable-coredump',

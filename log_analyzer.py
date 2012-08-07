@@ -30,12 +30,12 @@ def get_logs(path):
     output['client'] = {}
     for path, dirs, files in os.walk(os.path.abspath(path)):
         for filename in files:
-            match = re.match('osd.([0-9]+).log.gz', filename)
+            match = re.match('ceph-osd.([0-9]+).log.gz', filename)
             if match:
                 fn = os.path.join(path, filename)
                 output['osd'][int(match.group(1))] = wrapgz(
                     os.path.join(path, filename))
-            match = re.match('osd.([0-9]+).log', filename)
+            match = re.match('ceph-osd.([0-9]+).log', filename)
             if match and not int(match.group(1)) in output['osd']:
                 fn = os.path.join(path, filename)
                 output['osd'][int(match.group(1))] = wrap(
@@ -149,5 +149,5 @@ for _, i in all_requests:
 
 print osds
 
-for _, i in all_requests[-10:]:
+for _, i in all_requests[-1000:]:
     print i.pretty_print()

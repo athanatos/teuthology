@@ -4,12 +4,16 @@ roles:
   - osd.0
   - mon.1
   - client.2
-- - mon.2
   - osd.1
-  - client.0
 - - osd.2
+  - mon.2
+  - client.0
   - client.1
-- - osd.3
+  - osd.3
+#- - osd.4
+#  - osd.5
+#- - osd.6
+#  - osd.7
 #- - osd.4
 #- - osd.5
 overrides:
@@ -19,36 +23,52 @@ overrides:
 #       osd.1: [--tool=memcheck]
 #       osd.2: [--tool=memcheck]
     #   osd.3: [--tool=memcheck, --leak-check=full]
-    btrfs: 1
+    fs: btrfs
+#    block_journal: true
     log-whitelist:
     - clocks not synchronized
-    path: /home/samuelj/ceph
+#    path: /home/samuelj/ceph
     conf:
       osd:
         lockdep : false
         debug osd : 20
-        debug ms : 10
+        debug ms : 1
         debug filestore : 20
+        #debug journal : 20
         debug objecter : 20
+        debug ms : 1
         debug client : 20
-#        filestore btrfs snap : 0
+        journal aio : true
+        filestore flusher : false
+        filestore xattrs use omap : true
+        filestore max inline xattr size : 0
+        osd map dedup : false
+        osd op threads : 10
+        osd disk threads : 5
+        osd recovery max active : 10
+        osd recovery max chunk : 10485760
+#        osd debug drop pg create probability : 50
+#        osd debug drop pg create duration : 10
+#kernel:
 tasks:
 - ceph: null
 - thrashosds:
-    chance_down: 30
+    chance_down: 40
+#    min_in: 5
 - rados:
     clients:
     - client.0
     - client.1
     - client.2
-    objects: 100
+    objects: 500
     op_weights:
       write: 100
       delete: 50
       read: 100
-      snap_create: 10
-      rollback: 20
-      snap_remove: 8
+      snap_create: 30
+      rollback: 30
+      snap_remove: 35
       setattr: 100
       rmattr: 50
-    ops: 400000
+#      watch: 10
+    ops: 8000
