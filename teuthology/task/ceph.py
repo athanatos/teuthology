@@ -220,7 +220,7 @@ def binaries(ctx, config):
                 log.info('Installing %s to %s...' % (path, tmpdir))
                 subprocess.check_call(
                     args=[
-                        'make',
+                        'make', '-j16',
                         'install',
                         'DESTDIR={tmpdir}'.format(tmpdir=tmpdir),
                         ],
