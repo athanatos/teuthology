@@ -23,6 +23,11 @@ def do_download(ctx, config):
         sha1 = cconf.get('sha1')
         ctx.cluster.only(client).run(
             args=[
+                'sudo', 'apt-get', '-y', 'install', 'libcurl3'
+                ],
+            )
+        ctx.cluster.only(client).run(
+            args=[
                 'git', 'clone',
                 '-b', branch,
 #                'https://github.com/ceph/s3-tests.git',
