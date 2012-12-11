@@ -18,6 +18,7 @@ def rados_start(remote, cmd):
         '-c', '/tmp/cephtest/ceph.conf',
         ];
     pre.extend(cmd)
+    pre.extend(['--no-cleanup'])
     proc = remote.run(
         args=pre,
         wait=False,
@@ -63,7 +64,7 @@ def task(ctx, config):
     manager.raw_cluster_cmd('osd', 'unset', 'nodown')
 
     # write some new data
-    p = rados_start(mon, ['-p', 'rbd', 'bench', '60', 'write', '-b', '4096'])
+    p = rados_start(mon, ['-p', 'rbd', 'bench', '240', 'write', '-b', '10'])
 
     time.sleep(15)
 
@@ -85,7 +86,7 @@ def task(ctx, config):
     manager.wait_for_active_or_down()
 
     # write some more (make sure osd.2 really is divergent)
-    p = rados_start(mon, ['-p', 'rbd', 'bench', '15', 'write', '-b', '4096'])
+    p = rados_start(mon, ['-p', 'rbd', 'bench', '15', 'write', '-b', '10'])
     p.exitstatus.get();
 
     # revive divergent osd
