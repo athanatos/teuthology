@@ -47,15 +47,24 @@ class ProcThrasher:
                 procs.remove(proc)
                 proc.stdin.close()
                 self.log("About to wait")
-                run.wait([proc])
+                try:
+                    run.wait([proc])
+                except:
+                    pass
                 self.log("Killed proc")
                 
             while len(procs) < self.num_procs:
                 self.log("Creating proc " + str(len(procs) + 1))
                 self.log("args are " + str(self.proc_args) + " kwargs: " + str(self.proc_kwargs))
-                procs.append(self.remote.run(
-                        *self.proc_args,
-                        ** self.proc_kwargs))
+                proc = None
+                try:
+                    proc = self.remote.run(
+                         *self.proc_args,
+                         ** self.proc_kwargs)
+                except:
+                    proc = None
+                if proc is not None:
+                    procs.append(proc)
             self.log("About to sleep")
             time.sleep(self.rest_period)
             self.log("Just woke")
