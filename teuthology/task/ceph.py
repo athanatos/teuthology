@@ -334,6 +334,10 @@ def cluster(ctx, config):
         )
 
 
+    for remote in ctx.cluster.remotes.keys():
+      remote.run(args=['sudo', 'apt-get', 'install', '-y', 'libboost-program-options1.46-dev'])
+
+
     devs_to_clean = {}
     remote_to_roles_to_devs = {}
     remote_to_roles_to_journals = {}
@@ -629,6 +633,7 @@ def cluster(ctx, config):
 
     log.info('Running mkfs on osd nodes...')
     for remote, roles_for_host in osds.remotes.iteritems():
+	log.info('osd remote %s', str(remote))
         roles_to_devs = remote_to_roles_to_devs[remote]
         roles_to_journals = remote_to_roles_to_journals[remote]
         ctx.disk_config = argparse.Namespace()
