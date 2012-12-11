@@ -1,5 +1,8 @@
 import contextlib
 import logging
+import gevent
+from ceph_manager import CephManager
+from teuthology import misc as teuthology
 
 from ..orchestra import run
 
@@ -21,6 +24,7 @@ def task(ctx, config):
           min_stride_size: <minimum write stride size in bytes>
           max_stride_size: <maximum write stride size in bytes>
           op_weights: <dictionary mapping operation type to integer weight>
+          num_runs: <number of times to run> "data" is remade between runs
 
     For example::
 
@@ -42,6 +46,7 @@ def task(ctx, config):
               snap_create: 3
               rollback: 2
               snap_remove: 0
+            runs: 10
         - interactive:
     """
     log.info('Beginning rados...')
@@ -75,23 +80,40 @@ def task(ctx, config):
         '--max-seconds', str(config.get('max_seconds', 0))
         ]
 
-    tests = {}
-    for role in config.get('clients', ['client.0']):
-        assert isinstance(role, basestring)
-        PREFIX = 'client.'
-        assert role.startswith(PREFIX)
-        id_ = role[len(PREFIX):]
-        (remote,) = ctx.cluster.only(role).remotes.iterkeys()
-        proc = remote.run(
-            args=['CEPH_CLIENT_ID={id_}'.format(id_=id_)] + args,
-            logger=log.getChild('rados.{id}'.format(id=id_)),
-            stdin=run.PIPE,
-            wait=False
-            )
-        tests[id_] = proc
+    def thread():
+        if not hasattr(ctx, 'manager'):
+            first_mon = teuthology.get_first_mon(ctx, config)
+            (mon,) = ctx.cluster.only(first_mon).remotes.iterkeys()
+            ctx.manager = CephManager(
+                mon,
+                ctx=ctx,
+                logger=log.getChild('ceph_manager'),
+                )
+       
+        for i in range(int(config.get('runs', '1'))):
+            log.info("starting run %s out of %s", str(i), config.get('runs', '1'))
+            ctx.manager.remove_pool("data")
+            ctx.manager.create_pool("data")
+            tests = {}
+            for role in config.get('clients', ['client.0']):
+                assert isinstance(role, basestring)
+                PREFIX = 'client.'
+                assert role.startswith(PREFIX)
+                id_ = role[len(PREFIX):]
+                (remote,) = ctx.cluster.only(role).remotes.iterkeys()
+                proc = remote.run(
+                    args=['CEPH_CLIENT_ID={id_}'.format(id_=id_)] + args,
+                    logger=log.getChild('rados.{id}'.format(id=id_)),
+                    stdin=run.PIPE,
+                    wait=False
+                    )
+                tests[id_] = proc
+            run.wait(tests.itervalues())
+
+    running = gevent.spawn(thread)
 
     try:
         yield
     finally:
         log.info('joining rados')
-        run.wait(tests.itervalues())
+        running.get()
