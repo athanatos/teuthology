@@ -27,6 +27,8 @@ def task(ctx, config):
         duration: <seconds for each measurement run>
         num_objects: <number of objects>
         io_size: <io size in bytes>
+        sequential: true|false
+        num-concurrent-ops: <num-concurrent-ops>
 
     example:
 
@@ -36,6 +38,8 @@ def task(ctx, config):
         duration: 60
         num_objects: 500
         io_size: 4096
+        sequential: true
+        num-concurrent-ops: 20
     """
     if config is None:
         config = {}
@@ -99,6 +103,13 @@ class RecoveryBencher:
         osd = str(random.choice(self.osds))
         (osd_remote,) = self.ceph_manager.ctx.cluster.only('osd.%s' % osd).remotes.iterkeys()
 
+        self.ceph_manager.mark_out_osd(0)
+        self.ceph_manager.mark_out_osd(1)
+	self.ceph_manager.wait_for_clean()
+
+        self.ceph_manager.osd_socket_stream(0, 'osd_events')
+        self.ceph_manager.osd_socket_stream(2, 'osd_events')
+
         # create the objects
         osd_remote.run(
             args=[
@@ -130,14 +141,20 @@ class RecoveryBencher:
                 '--do-not-init', '1',
                 '--duration', str(duration),
                 '--io-size', str(io_size),
+                '--sequential', str(self.config.get('sequential', 'false')),
+                '--num-concurrent-ops', str(self.config.get('num-concurrent-ops', 20)),
+                '--write-ratio', str(self.config.get('write-ratio', 0.7)),
                 ],
             stdout=StringIO(),
             stderr=StringIO(),
             wait=True,
         )
-        self.process_samples(p.stderr.getvalue())
+        before = {}
+        self.process_samples(p.stderr.getvalue(), before)
+        self.process_summary(p.stdout.getvalue(), before)
 
-        self.ceph_manager.raw_cluster_cmd('osd', 'out', osd)
+        self.ceph_manager.mark_in_osd(0)
+        self.ceph_manager.mark_in_osd(1)
         time.sleep(5)
 
         # recovery bench
@@ -154,23 +171,46 @@ class RecoveryBencher:
                 '--do-not-init', '1',
                 '--duration', str(duration),
                 '--io-size', str(io_size),
+                '--sequential', str(self.config.get('sequential', 'false')),
+                '--num-concurrent-ops', str(self.config.get('num-concurrent-ops', 20)),
+                '--write-ratio', str(self.config.get('write-ratio', 0.7)),
                 ],
             stdout=StringIO(),
             stderr=StringIO(),
             wait=True,
         )
-        self.process_samples(p.stderr.getvalue())
+        after = {}
+        self.process_samples(p.stderr.getvalue(), after)
+        self.process_summary(p.stdout.getvalue(), after)
 
         self.ceph_manager.raw_cluster_cmd('osd', 'in', osd)
+        log.info("summary: %s", json.dumps({
+                    'before':before,
+                    'after':after}))
+                    
 
-    def process_samples(self, input):
+    def process_summary(self, input, out):
+        if len(input) == 0: return
+        line = input.split('\n')[-2]
+        print line
+        j = json.loads(line)
+        for i in ['read', 'write_committed']:
+            if i not in j.keys():
+                continue
+            for k in ['avg_total_iops', 'avg_total_throughput',
+                      'avg_total_throughput_mb']:
+                log.info("%s-%s: %s", i, k, str(j[i][k]))
+                out.setdefault(i, {})[k] = float(j[i][k])
+                
+
+    def process_samples(self, input, out):
         lat = {}
         for line in input.split('\n'):
             try:
                 sample = json.loads(line)
                 samples = lat.setdefault(sample['type'], [])
                 samples.append(float(sample['latency']))
-            except Exception, e:
+            except:
               pass
 
         for type in lat:
@@ -189,3 +229,5 @@ class RecoveryBencher:
             ninety_nine = samples[int(num * 0.99)]
 
             log.info("%s: median %f, 99%% %f" % (type, median, ninety_nine))
+            out.setdefault(type, {})['median'] = float(median)
+            out.setdefault(type, {})['ninety_nine'] = float(ninety_nine)
