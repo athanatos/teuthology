@@ -1,0 +1,23 @@
+roles:
+- - mon.0
+  - osd.0
+  - osd.1
+- - osd.2
+  - osd.3
+- - osd.4
+  - osd.5
+- - osd.6
+  - osd.7
+- - osd.8
+  - osd.9
+- - client.0
+overrides:
+  ceph:
+    log-whitelist:
+    - clocks not synchronized
+    conf:
+      osd:
+        osd min pg log entries : 5
+        debug osd : 20
+        debug ms : 10
+        debug filestore : 20

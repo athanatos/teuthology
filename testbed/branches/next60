@@ -1,0 +1,6 @@
+overrides:
+  ceph:
+    branch: wip_next_smalliobench
+    conf:
+      osd:
+        osd recovery op priority : 1

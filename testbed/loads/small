@@ -1,0 +1,9 @@
+tasks:
+- ceph: null
+- recovery_bench:
+    duration: 60
+    num_objects: 500
+    io_size: 4096
+    sequential: true
+    num-concurrent-ops: 600
+    write-ratio: 1
