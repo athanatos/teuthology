@@ -1,0 +1,55 @@
+roles:
+#- [mon.0, osd.0, osd.1, osd.2, osd.3, client.0, client.1, client2, client3]
+- [mon.0, osd.0, osd.8]
+- [osd.1, osd.9]
+- [osd.2, osd.10]
+- [osd.3, osd.11]
+- [osd.4, osd.12]
+- [osd.5, osd.13]
+- [osd.6, osd.14]
+- [osd.7, osd.15]
+- [client.0]
+- [client.1]
+- [client.2]
+- [client.3]
+#- [client.4]
+#- [client.5]
+#- [client.6]
+#- [client.7]
+overrides:
+  ceph:
+    fs: xfs
+    block_journal: true
+    log-whitelist:
+    - clocks not synchronized
+    path: /home/sam/ceph
+    conf:
+      osd:
+        lockdep : false
+        debug osd : 20
+        debug journal : 40
+        debug ms : 5
+        debug filestore : 20
+#        journal zero on create : true
+        ms dispatch throttle bytes : 2073741824
+        osd client message size cap : 2073741824
+        filestore queue max bytes : 2073741824
+        journal aio : true
+        filestore flusher : false
+tasks:
+- chef:
+#- collectl:
+- ceph:
+#- osdbench:
+- radosbench:
+    time: 600
+    concurrent_ops: 192
+    clients:
+    - client.0
+    - client.1
+    - client.2
+    - client.3
+#    - client.4
+#    - client.5
+#    - client.6
+#    - client.7

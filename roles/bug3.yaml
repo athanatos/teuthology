@@ -1,0 +1,67 @@
+#kernel: &id001
+#  kdb: true
+#  sha1: ea18acf27e2f7cee4ac9d01719564414d2cd64b5
+#nuke-on-error: true
+overrides:
+  ceph:
+    fs: xfs
+    log-whitelist:
+    - slow request
+#    sha1: 508bf3fb96929dc6e91ee83a915a7f30df23eeeb
+roles:
+- - mon.a
+  - osd.0
+  - osd.1
+  - osd.2
+- - mds.a
+  - osd.2
+  - osd.4
+  - osd.5
+- - client.0
+#targets:
+#  ubuntu@plana11.front.sepia.ceph.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQ6pa08z6rzzYAg8XwQMQNufxFrnjLBD81wtwoHqRQucPoBh9qGWWoS0cEIiyLMp7rbSuof5XrqkGxHFP99DgengGwpuAanXA1DfmFf87mL4q8MOyD6YNzgDW9vVqq/ENHk+GlDvT823WYWwod4/p1BZA+kehQYkVF9ebpXZJBbr3Cc+4F2LK+fbxrn+1U1OC6F87j8XulcPe6csQfVljndtsEgA4KCtpxNn54fVON6559jbdgTKj8yDZjUF76m8jU8ImVyqulQ6AL6gwOONpqf1lpxRSRDm8zd7Uuo/zm25ku1MZ9B8gkL+yBZDpWZbLLEXDca/LKfrneUO0LqjzH
+#  ubuntu@plana12.front.sepia.ceph.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDre5Wd3DbprwoJYrUe48niK0uhqzlfbntgARcodsY1iV42HW1zyFlvhxbg/V2S4X7Bo1Ymu9PVyTXoRDhQlBqqWv3BbEsk6FLf7QGdDS5wRRIHCBdu9eeB+8FmG5xf9akx/U0hR6TozlMHMRs4s/DUS3heG1oT1o+aaDo77fI4GlieifEgE8DjOA7fhVnjh3L39ZVaIgps9DGvmdlhSPOMaN3ENNDzSJBoUDGWGNMw7Jurwu06qGgM7d36IUISqbO61FZZuhHXQhFAG0s1gHOusALw8uHOOUv6+ClCNw+h4KYyCiPqK3liJZyInHgD64hDf51dA8Q73mKh2pnrwxKT
+#  ubuntu@plana13.front.sepia.ceph.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBCv+O3jMwlV+Cu2/+fryD4y6zHcLSJYHD47MVt+7oCMuYLDRHIeezoege4H10/DVy8KjEjMrft8KtFKPMHbfvVvgVYeb8qEF5w7GfFxMz1ox2ThT1heEPtrpBqdF9p2lb6aS+S2tC5noTyb0qoVci6nUK3A3cl+LTh+n+skHviMlJok3tyqz6Ye/j011i4pfiPNbuwR7WKUuQs8hhoDy0pztzbhTZE+KZ42LKM34t9hB1NFT1uVRvfiCMaq4e+SdcwuZRlqws+LG/KpJ/5wsmBhjhBMbDXzks8PDBpnmiKJ5cPPYDmJ4QtAUEdjb6B8awli/R3EGYl0D8RolY9sR1
+tasks:
+#- internal.lock_machines: 3
+#- internal.save_config: null
+#- internal.check_lock: null
+#- internal.connect: null
+#- internal.check_conflict: null
+#- kernel: *id001
+#- internal.base: null
+#- internal.archive: null
+#- internal.coredump: null
+#- internal.syslog: null
+#- internal.timer: null
+#- kernel: *id001
+#- chef: null
+#- clock: null
+- ceph:
+    log-whitelist:
+    - wrongly marked me down or wrong addr
+    - objects unfound and apparently lost
+    conf:
+      osd:
+        lockdep : false
+        osd debug drop ping : true
+        osd debug drop ping probability : 0.3
+        osd debug drop ping duration : 10
+        debug ms : 20
+        #debug filestore : 20
+        #debug journal : 20
+- thrashosds:
+    timeout: 1200
+- rados:
+    clients:
+    - client.0
+    objects: 500
+    op_weights:
+      delete: 50
+      read: 100
+      snap_create: 10
+      snap_remove: 70
+      snap_rollback: 50
+      write: 100
+    ops: 4000
+

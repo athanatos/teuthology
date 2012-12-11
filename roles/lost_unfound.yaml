@@ -1,0 +1,32 @@
+overrides:
+  ceph:
+    conf:
+      global:
+        ms inject socket failures: 5000
+      osd:
+        debug osd: 20
+        debug filestore: 20
+        debug ms: 1
+    fs: btrfs
+    log-whitelist:
+    - slow request
+    sha1: dc93132d8cc1edf83b7e0a603b366cde6750f4d6
+  s3tests:
+    branch: next
+  workunit:
+    sha1: dc93132d8cc1edf83b7e0a603b366cde6750f4d6
+roles:
+- - mon.a
+  - mon.b
+  - mon.c
+  - mds.a
+  - osd.0
+  - osd.1
+  - osd.2
+tasks:
+- chef: null
+- clock: null
+- ceph:
+    log-whitelist:
+    - objects unfound and apparently lost
+- lost_unfound: null

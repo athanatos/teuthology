@@ -1,0 +1,11 @@
+roles:
+- [mon.0, osd.0, client.0, client.1, osd.1, osd.2]
+tasks:
+- ceph:
+- thrashosds:
+    chance_down: 100
+- testsnaps:
+    clients: [client.0]
+    time: 30
+    ops: 200
+- interactive:

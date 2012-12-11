@@ -1,0 +1,34 @@
+overrides:
+  ceph:
+    fs: btrfs
+    log-whitelist:
+    - slow request
+    conf:
+      osd:
+        lockdep : false
+        osd debug drop pg create probability : .3
+        osd debug drop pg create duration : 5
+roles:
+- - mon.a
+  - mon.c
+  - osd.0
+  - osd.1
+  - osd.2
+- - mon.b
+  - mds.a
+  - osd.3
+  - osd.4
+  - osd.5
+- - client.0
+tasks:
+- chef: null
+- clock: null
+- ceph: null
+- ceph-fuse: null
+- thrashosds:
+    chance_down: 40
+- multibench:
+    time: 60
+    radosbench:
+      clients: [client.0]
+      time: 10

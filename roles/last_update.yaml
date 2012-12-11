@@ -1,0 +1,43 @@
+kernel:
+  kdb: true
+  branch: testing
+overrides:
+  ceph:
+    conf:
+      client:
+        rbd cache: true
+      osd:
+        debug ms: 1
+        debug osd: 10
+    fs: ext4
+    log-whitelist:
+    - slow request
+    branch: wip_recover_primary_testing
+  s3tests:
+    branch: testing
+  workunit:
+    branch: wip_recover_primary_testing
+roles:
+- - mon.a
+  - osd.0
+  - osd.1
+  - osd.2
+- - mds.a
+  - osd.3
+  - osd.4
+  - osd.5
+- - client.0
+tasks:
+- chef: null
+- clock: null
+- ceph:
+    log-whitelist:
+    - wrongly marked me down
+    - objects unfound and apparently lost
+- thrashosds:
+    timeout: 120000000
+- rbd_fsx:
+    clients:
+    - client.0
+    ops: 20000
+

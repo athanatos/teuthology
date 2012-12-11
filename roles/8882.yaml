@@ -1,0 +1,57 @@
+interactive-on-error: true
+roles:
+- - mon.0
+  - osd.0
+  - osd.1
+  - osd.2
+  - osd.3
+  - client.0
+#- - osd.4
+#  - osd.5
+#  - client.1
+overrides:
+  ceph:
+    valgrind:
+#      osd:
+#      - --tool=memcheck
+    path: /home/samuelj/ceph
+#    branch: wip_split
+    fs: btrfs
+    log-whitelist:
+    - clocks not synchronized
+    conf:
+#      global:
+#        ms inject socket failures: 500
+      osd:
+        lockdep : false
+        debug osd : 20
+        debug ms : 1
+        debug filestore : 20
+        debug journal : 20
+        debug objecter : 20
+        debug client : 20
+        debug optracker : 20
+        osd max backfills : 20
+#        filestore btrfs snap : 0
+tasks:
+- chef: null
+- clock: null
+- ceph: null
+- thrashosds:
+    chance_down: 60
+- rados:
+    runs: 100
+    clients:
+    - client.0
+    objects: 10000
+    object_size: 41943
+    op_weights:
+      write: 100
+      delete: 50
+      read: 100
+      snap_create: 10
+      rollback: 20
+      snap_remove: 8
+      setattr: 100
+      rmattr: 50
+    ops: 15000

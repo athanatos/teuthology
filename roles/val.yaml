@@ -1,0 +1,17 @@
+nuke-on-error: true
+overrides:
+  ceph:
+    fs: btrfs
+    path: /home/samuelj/ceph4
+    valgrind:
+      osd: ['--tool=memcheck', '--leak-check=full']
+roles:
+- - mon.a
+  - osd.0
+  - osd.1
+  - osd.2
+  - osd.3
+tasks:
+- chef: null
+- clock: null
+- ceph:

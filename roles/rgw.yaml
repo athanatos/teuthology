@@ -1,0 +1,17 @@
+interactive-on-error: true
+roles:
+- - mon.0
+  - mds.0
+  - osd.0
+  - osd.1
+  - osd.2
+  - client.0
+tasks:
+- ceph:
+#    valgrind:
+#      osd: ['--tool=memcheck', '--leak-check=full']
+    path: /home/samuelj/ceph3
+- rgw: [client.0]
+- s3tests:
+    client.0:
+      rgw_server: client.0

@@ -1,0 +1,15 @@
+roles:
+- [client.0]
+- [mon.a, mon.c, osd.0, osd.1, osd.2]
+- [mon.b, mds.a, osd.3, osd.4, osd.5]
+tasks:
+- ceph:
+    valgrind:
+      osd:
+      - --tool=leakcheck --leak-check=full
+    branch: next
+- rbd:
+    all:
+- rbd.xfstests:
+    client.0:
+        count: 2

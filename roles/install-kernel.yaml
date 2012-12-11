@@ -1,0 +1,9 @@
+targets:
+  ubuntu@sepia10.ceph.dreamhost.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCmZNVab6zR76wfYMNbifd3IxRWQ3aEVV9sHbVbdh8PYc7fSWT6I78HYiAsFH84MqIUdTFABL+qrmWuRZW+8tRq3Vba20eM7OJukGiUophDzJ6ftH1nn8OVfigLHvhxnblN7ajiuZ/QnwoDM4SAqAxM4dKWt7+iQo4A62zro9XcATwIRFi6teGaU65mdXQMhSxx9nmGoNaQqKTHTAhSP2Cp+HL9u5sonRncu5/lEc+R8oqqMTz0tuvyB+b206xsYK/OcCZAEy1NWrjJM6c8BOeFbP1jnmb06MAGV/yvnfeL5MYAXB47MRbpIdnzWJQnyU5V9nHvIGj/VD9K56y7FB1j
+roles: [[osd.0]]
+  
+kernel:
+  tag: v3.1-rc4
+tasks:
+  - ceph:
+  - interactive:

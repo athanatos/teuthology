@@ -1,0 +1,29 @@
+kernel:
+  branch: master
+nuke-on-error: true
+overrides:
+  ceph:
+    btrfs: 1
+    coverage: true
+    log-whitelist:
+    - clocks not synchronized
+    path: /home/samuelj/ceph2
+    conf:
+      osd:
+        debug osd : 10
+        debug ms : 1
+roles:
+- - mon.a
+  - mon.c
+  - osd.0
+- - mon.b
+  - mds.a
+  - osd.1
+- - client.0
+tasks:
+- chef: null
+- ceph: null
+- kclient: null
+- workunit:
+    all:
+    - suites/fsstress.sh

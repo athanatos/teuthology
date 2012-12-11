@@ -1,0 +1,39 @@
+interactive-on-error: true
+overrides:
+  ceph:
+    conf:
+      client:
+        debug ms: 20
+        debug objecter: 20
+        debug objectcacher: 20
+        debug monclient: 20
+        ms inject socket failures: 5000
+      osd:
+        debug ms: 1
+        debug osd: 20
+        debug filestore: 20
+#        ms inject socket failures: 5000
+    fs: btrfs
+    log-whitelist:
+    - slow request
+    branch: master
+roles:
+- - mon.a
+  - mon.c
+  - osd.0
+  - osd.1
+  - osd.2
+- - mon.b
+  - mds.a
+  - osd.3
+  - osd.4
+  - osd.5
+  - client.0
+tasks:
+- ceph: null
+- ceph-fuse: null
+- workunit:
+    clients:
+      all:
+      - suites/blogbench.sh
+

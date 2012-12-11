@@ -1,0 +1,44 @@
+interactive-on-error: true
+roles:
+- - mon.0
+  - osd.0
+  - mon.1
+  - client.2
+  - osd.1
+- - osd.2
+  - mon.2
+  - client.0
+  - client.1
+  - osd.3
+#- - osd.4
+#- - osd.5
+overrides:
+  ceph:
+#    valgrind:
+#       osd.0: [--tool=memcheck]
+#       osd.1: [--tool=memcheck]
+#       osd.2: [--tool=memcheck]
+    #   osd.3: [--tool=memcheck, --leak-check=full]
+    fs: btrfs
+    log-whitelist:
+    - clocks not synchronized
+    path: /home/sam/ceph
+    conf:
+      osd:
+        lockdep : false
+        debug osd : 20
+        debug ms : 10
+        debug filestore : 20
+        debug objecter : 20
+        debug client : 20
+        filestore debug omap check : true
+        filestore xattr use omap : true
+#        filestore btrfs snap : 0
+kernel:
+tasks:
+- ceph: null
+- thrashosds:
+    chance_down: 0
+- watch_notify_stress:
+    clients: [client.0, client.2]
+    flags: --debug-objecter 5 --debug-ms 1 --log-to-stderr 1 --log-file /tmp/cephtest/archive/watch.out

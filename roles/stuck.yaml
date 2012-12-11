@@ -1,0 +1,40 @@
+kernel: &id001
+  kdb: true
+  sha1: 1fe5e9932156f6122c3b1ff6ba7541c27c86718c
+overrides:
+  ceph:
+    conf:
+      global:
+        rbd cache: true
+        rbd cache max dirty: 0
+      osd:
+        debug osd: 20
+        debug ms: 1
+    fs: xfs
+    log-whitelist:
+    - slow request
+    branch: wip_push_fix
+roles:
+- - mon.a
+  - osd.0
+  - osd.1
+  - osd.2
+- - mds.a
+  - osd.3
+  - osd.4
+  - osd.5
+- - client.0
+tasks:
+- ceph:
+    conf:
+      osd:
+        osd min pg log entries: 5
+    log-whitelist:
+    - wrongly marked me down
+    - objects unfound and apparently lost
+- thrashosds:
+    timeout: 2400000
+- rbd_fsx:
+    clients:
+    - client.0
+    ops: 20000

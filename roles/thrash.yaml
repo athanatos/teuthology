@@ -1,0 +1,22 @@
+roles:
+- - mon.0
+  - mds.0
+  - osd.0
+- - mon.1
+  - osd.1
+- - osd.2
+  - osd.3
+  - client.0
+tasks:
+- ceph:
+    conf:
+      osd:
+        debug osd : 25
+        debug filestore : 25
+    path: /home/samuelj/ceph4
+    log-whitelist:
+    - clocks not synchronized
+- thrashosds: null
+- testrados:
+    clients: [client.0]
+    snaps: true

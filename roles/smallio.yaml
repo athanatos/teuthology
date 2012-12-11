@@ -1,0 +1,57 @@
+interactive-on-error: true
+roles:
+- - mon.0
+  - osd.0
+  - mon.1
+  - client.2
+- - osd.1
+- - osd.2
+  - mon.2
+  - client.0
+  - client.1
+- - osd.3
+#- - osd.4
+#  - osd.5
+#- - osd.6
+#  - osd.7
+#- - osd.4
+#- - osd.5
+overrides:
+  ceph:
+    fs: xfs
+    block_journal: true
+    log-whitelist:
+    - clocks not synchronized
+    conf:
+      osd:
+        journal dio : true
+        journal aio : true
+        osd op threads : 24
+        osd disk threads : 24
+        filestore op threads : 6
+        filestore queue max ops : 24
+        osd client message size cap : 14000000
+        ms dispatch throttle bytes :  17500000
+        lockdep : false
+        debug osd : 20
+        debug filestore : 20
+        debug journal : 20
+        debug optracker : 20
+        journal aio : true
+#        filestore flusher : false
+        filestore xattrs use omap : true
+        filestore max inline xattr size : 0
+        osd recovery max active : 10
+        osd recovery max chunk : 10485760
+        debug tp : 15
+tasks:
+- ceph: null
+- small_io_bench:
+    clients:
+    - client.0
+    args:
+       '--num-objects': 100
+       '--num-concurrent-ops': 1000
+       '--duration': 500
+       '--io-size': 1024
+       '--object-size': 4194304

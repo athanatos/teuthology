@@ -1,0 +1,34 @@
+kernel: &id001
+  kdb: true
+  sha1: c7ed62dc8f36b5852c6df3a89df3742f2f5da7bc
+nuke-on-error: true
+overrides:
+  ceph:
+    conf:
+      global:
+        ms inject socket failures: 5000
+      osd:
+        debug osd: 20
+    fs: btrfs
+    log-whitelist:
+    - slow request
+    branch: wip_want_acting
+  workunit:
+    sha1: 0a26a60230f3fd47e30dc6c2b244e8d001202d17
+roles:
+- - mon.a
+  - mon.b
+  - mon.c
+  - mds.a
+  - osd.0
+  - osd.1
+  - osd.2
+tasks:
+- ceph:
+    conf:
+      osd:
+        osd min pg log entries: 5
+    log-whitelist:
+    - wrongly marked me down
+- osd_backfill: null
+

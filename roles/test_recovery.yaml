@@ -1,0 +1,38 @@
+roles:
+- - mon.0
+  - osd.0
+  - osd.1
+- - osd.2
+  - osd.3
+- - osd.4
+  - osd.5
+- - osd.6
+  - osd.7
+- - osd.8
+  - osd.9
+- - osd.10
+  - osd.11
+overrides:
+  ceph:
+    path: /home/samuelj/ceph2
+    log-whitelist:
+    - clocks not synchronized
+    conf:
+      global:
+        osd pg bits : 8
+        osd pgp bits : 8
+        osd pool default pg num : 600
+        osd pool default pgp num : 600
+        osd recovery op priority : 1
+#        osd client op priority : 1
+      osd:
+        osd min pg log entries : 30000
+        osd recovery max chunk : 8388608
+tasks:
+- ceph: null
+- recovery_bench:
+    duration: 600
+    num_objects: 5000
+    io_size: 4096
+    sequential: false
+    num-concurrent-ops: 10000

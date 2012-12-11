@@ -1,0 +1,32 @@
+roles:
+- - mon.a
+  - osd.0
+  - osd.1
+  - osd.2
+- - mds.a
+  - osd.3
+  - osd.4
+  - osd.5
+#- - osd.6
+#  - osd.7
+#  - osd.8
+- - client.0
+tasks:
+- ceph:
+   log-whitelist:
+   - wrongly marked me down or wrong addr
+   - objects unfound and apparently lost
+   fs: xfs
+- thrashosds: null
+- rados:
+   clients:
+   - client.0
+   objects: 500
+   op_weights:
+      delete: 50
+      read: 100
+      snap_create: 50
+      snap_remove: 50
+      snap_rollback: 50
+      write: 100
+   ops: 40000

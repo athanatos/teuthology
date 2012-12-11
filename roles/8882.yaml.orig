@@ -1,0 +1,104 @@
+interactive-on-error: true
+roles:
+- - mon.0
+  - osd.0
+#  - mon.1
+  - client.2
+- - mon.2
+  - osd.1
+<<<<<<< Updated upstream
+=======
+- - osd.2
+#  - mon.2
+>>>>>>> Stashed changes
+  - client.0
+- - osd.2
+  - client.1
+- - osd.3
+#- - osd.4
+#  - osd.5
+#- - osd.6
+#  - osd.7
+#- - osd.4
+#- - osd.5
+overrides:
+  ceph:
+#    valgrind:
+#       osd.0: [--tool=memcheck]
+#       osd.1: [--tool=memcheck]
+#       osd.2: [--tool=memcheck]
+    #   osd.3: [--tool=memcheck, --leak-check=full]
+<<<<<<< Updated upstream
+    btrfs: 1
+    log-whitelist:
+    - clocks not synchronized
+    path: /home/samuelj/ceph
+=======
+    fs: btrfs
+#    block_journal: true
+    log-whitelist:
+    - clocks not synchronized
+#    path: /home/samuelj/ceph
+>>>>>>> Stashed changes
+    conf:
+      osd:
+        lockdep : false
+        debug osd : 20
+<<<<<<< Updated upstream
+        debug ms : 10
+        debug filestore : 20
+        debug objecter : 20
+        debug client : 20
+#        filestore btrfs snap : 0
+tasks:
+- ceph: null
+- thrashosds:
+    chance_down: 30
+=======
+        debug ms : 1
+        #debug filestore : 20
+        #debug journal : 20
+        debug objecter : 20
+        debug ms : 1
+        debug client : 20
+        journal aio : true
+        filestore flusher : false
+        filestore xattrs use omap : true
+        filestore max inline xattr size : 0
+        osd map dedup : false
+        osd op threads : 10
+        osd disk threads : 5
+        osd recovery max active : 10
+        osd recovery max chunk : 10485760
+#kernel:
+tasks:
+- ceph: null
+- thrashosds:
+    chance_down: 40
+#    min_in: 5
+>>>>>>> Stashed changes
+- rados:
+    clients:
+    - client.0
+    - client.1
+    - client.2
+    objects: 500
+    op_weights:
+      write: 100
+      delete: 50
+      read: 100
+<<<<<<< Updated upstream
+      snap_create: 10
+      rollback: 20
+      snap_remove: 8
+      setattr: 100
+      rmattr: 50
+=======
+      snap_create: 30
+      rollback: 30
+      snap_remove: 35
+      setattr: 100
+      rmattr: 50
+      watch: 10
+>>>>>>> Stashed changes
+    ops: 400000

@@ -1,0 +1,10 @@
+interactive-on-error:
+roles:
+- - mon.0
+  - mds.0
+  - osd.0
+  - client.0
+tasks:
+- ceph:
+- rgw: null
+- s3tests: null

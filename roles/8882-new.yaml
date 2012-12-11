@@ -1,0 +1,38 @@
+check-locks: false
+targets:
+  ubuntu@plana20.front.sepia.ceph.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCTOtP9gi/aNpDRqdqM4TFzZq2yJINUykKyW+2qZKFj7a6ef28vVmxC/0y8OfeaY5gUGd7ch+Kxs0tnq2wSkFUY7ZjywVk4WWm9kFr4iUTKU9oQ3HLLoSzGZEINCpLZ/zYyzS13M8+6tIpmeWRrgOwJgOOkhweyFr7VOk2QiHu7gX/Ivitg/wWDz9gnpucPAkXtgZfG0siq8VeEDEmz/s+x6PqnnY4JdeCtWHH4kMzrlV+lu0Q7/EJwYQKCw4m3jHYtFMIkNRJE+NgYC/9Eog2a5ia2P4h6ASJgkEejcr/0q/IuKBamlpvaUVTwIWh5I4H6vVT6pd0q2MQoibgViUzh
+  ubuntu@plana21.front.sepia.ceph.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzdM8rRVNhVglcwzMu7GucHCj0p9iRANyuAPCM1DD6hnc6oUKEND6ZWSkpAKtUdwXIdkS1OOPw/sf0mqN1UZhNS+8rspph1vo2ZhjTUnPi2UPaRp2yKkdYeEHbWz4zU+74Mt/1gyyjUPhyhjQ31cZiUDMYTm/Ynj2JJK7QfB6E9s+vmmaAOOSJKTpr68SPgXkdwkkaFRVTTNMjhAwbWJ3jmI3pBjB5q7M4ND/ViOlU4EOVRVcI/3Ug/4/tazzEfv+K1M8YFi0SPt1IJpPE9eH6L8V8w08DRVkEXEt72JjZFk/l5PJ3iXCRfY24Av4T4fKYhKZFuiQaDWU5kai8s/a3
+roles:
+- - mon.0
+  - osd.0
+  - osd.1
+  - osd.2
+- - mon.1
+  - mon.2
+  - client.0
+  - osd.3
+  - osd.4
+  - osd.5
+overrides:
+  ceph:
+    flavor: oneiric
+    btrfs: 1
+    log-whitelist:
+    - clocks not synchronized
+    conf:
+      osd:
+        debug osd : 20
+        debug ms : 10
+        debug filestore : 20
+tasks:
+- ceph: null
+- thrashosds: null
+- rados:
+    clients:
+    - client.0
+    objects: 500
+    op_weights:
+      delete: 50
+      read: 100
+      write: 50
+    ops: 400000
