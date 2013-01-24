@@ -377,7 +377,7 @@ class CephManager:
                 "\d* pgs:",
                 status).group(0).split()[0])
 
-    def create_pool(self, pool_name, pg_num=1):
+    def create_pool(self, pool_name, pg_num=256):
         with self.lock:
             assert isinstance(pool_name, str)
             assert isinstance(pg_num, int)

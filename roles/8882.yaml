@@ -14,8 +14,8 @@ overrides:
     valgrind:
 #      osd:
 #      - --tool=memcheck
-#    path: /home/samuelj/ceph
-    branch: next
+    path: /home/samuelj/ceph
+#    branch: next
     fs: xfs
     log-whitelist:
     - clocks not synchronized
@@ -32,6 +32,8 @@ overrides:
         debug client : 20
         debug optracker : 20
         osd max backfills : 20
+        osd recovery max chunk : 1000
+        osd recovery max active : 50
 #        filestore btrfs snap : 0
 tasks:
 - chef: null
@@ -39,14 +41,14 @@ tasks:
 - ceph: null
 - thrashosds:
     chance_down: 60
-    chance_pgnum_grow: 1
-    chance_pgpnum_fix: 1
+#    chance_pgnum_grow: 1
+#    chance_pgpnum_fix: 1
 - rados:
     runs: 100
     clients:
     - client.0
     objects: 100
-    object_size: 41943
+    object_size: 4194
     op_weights:
       write: 100
       delete: 50
