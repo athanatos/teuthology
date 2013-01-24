@@ -137,15 +137,32 @@ class Thrasher:
                 after = check_after,
                 shouldbedown = should_be_down
                 ))
+        if should_be_down:
+            self.log("Setting heartbeat_debug_disable_suicide on %s"(str(the_one),))
+            self.ceph_manager.set_config(
+                the_one, heartbeat_debug_disable_suicide='true')
         self.ceph_manager.set_config(the_one, **{conf_key:duration})
         if not should_be_down:
             return
         time.sleep(check_after)
         status = self.ceph_manager.get_osd_status()
+
+        self.log("Asserting down")
         assert the_one in status['down']
+        self.log("Done asserting down")
+
         time.sleep(duration - check_after + 20)
-        status = self.ceph_manager.get_osd_status()
-        assert not the_one in status['down']
+        self.log("waiting for up")
+        while True:
+            status = self.ceph_manager.get_osd_status()
+            if the_one in status['down']:
+                self.log("still down")
+                time.sleep(3)
+            else:
+                break
+        self.log("Unsetting heartbeat_debug_disable_suicide on %s"(str(the_one),))
+        self.ceph_manager.set_config(
+            the_one, heartbeat_debug_disable_suicide='false')
 
     def choose_action(self):
         chance_down = self.config.get('chance_down', 0.4)
