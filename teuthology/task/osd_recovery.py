@@ -193,9 +193,7 @@ def test_incomplete_pgs(ctx, config):
     log.info('all are up!')
 
     for i in range(4):
-        manager.set_config(
-            i,
-            osd_recovery_delay_start=0)
+        manager.kick_recovery_wq(i)
 
     # cluster must recover
     manager.wait_for_clean()
