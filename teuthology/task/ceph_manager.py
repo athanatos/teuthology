@@ -311,6 +311,7 @@ class CephManager:
     def kick_recovery_wq(self, osdnum):
         return self.raw_cluster_cmd(
             'tell', "osd.%d" % (int(osdnum),),
+            'debug',
             'kick_recovery_wq',
             '0')
 
