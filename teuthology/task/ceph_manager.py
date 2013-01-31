@@ -301,7 +301,7 @@ class CephManager:
             stdout=StringIO(),
             wait=False)
 
-    def osd_admin_socket(self, osdnum, command):
+    def osd_admin_socket(self, osdnum, command, check_status=True):
         remote = None
         for _remote, roles_for_host in self.ctx.cluster.remotes.iteritems():
             for id_ in teuthology.roles_of_type(roles_for_host, 'osd'):
@@ -323,6 +323,7 @@ class CephManager:
             args=args,
             stdout=StringIO(),
             wait=True,
+            check_status=check_status
             )
 
     def get_pg_primary(self, pool, pgnum):
@@ -358,7 +359,9 @@ class CephManager:
 
     def wait_admin_socket(self, osdnum):
         while True:
-            proc = self.osd_admin_socket(osdnum, ['version'])
+            proc = self.osd_admin_socket(
+                osdnum, ['version'],
+                check_status=False)
             if proc.exitstatus is 0:
                 break;
             else:
@@ -371,7 +374,8 @@ class CephManager:
             while True:
                 proc = self.osd_admin_socket(
                     osdnum,
-                    [str(k).replace("_", "-") , str(v)])
+                    [str(k).replace("_", "-") , str(v)],
+                    check_status=False)
                 if proc.exitstatus is 0:
                     break
                 else:
