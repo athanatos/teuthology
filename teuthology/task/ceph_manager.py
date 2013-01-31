@@ -365,8 +365,10 @@ class CephManager:
             if proc.exitstatus is 0:
                 break;
             else:
-                self.log("waiting on admin_socket for {osdnum}",
-                         osdnum=osdnum)
+                self.log(
+                    "waiting on admin_socket for {osdnum}".format(
+                        osdnum=osdnum,
+                        argdict=argdict))
                 time.sleep(5)
 
     def set_config(self, osdnum, **argdict):
@@ -380,9 +382,9 @@ class CephManager:
                     break
                 else:
                     self.log(
-                        "waiting on admin_socket for {osdnum}, {argdict}",
-                        osdnum=osdnum,
-                        argdict=argdict)
+                        "waiting on admin_socket for {osdnum}, {argdict}".format(
+                            osdnum=osdnum,
+                            argdict=argdict))
                     time.sleep(5)
 
     def raw_cluster_status(self):
