@@ -367,7 +367,7 @@ class CephManager:
                 time.sleep(5)
 
     def set_config(self, osdnum, **argdict):
-        for k,v in argdict:
+        for k,v in argdict.iteritems():
             while True:
                 proc = self.osd_admin_socket(
                     osdnum,
