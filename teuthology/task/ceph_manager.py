@@ -374,7 +374,7 @@ class CephManager:
             while True:
                 proc = self.osd_admin_socket(
                     osdnum,
-                    [str(k).replace("_", "-") , str(v)],
+                    ['config', 'set', str(k).replace("_", "-") , str(v)],
                     check_status=False)
                 if proc.exitstatus is 0:
                     break
