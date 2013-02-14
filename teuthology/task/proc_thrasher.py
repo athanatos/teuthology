@@ -2,6 +2,7 @@ import logging
 import gevent
 import random
 import time
+import copy
 
 from ..orchestra import run
 
@@ -20,7 +21,7 @@ class ProcThrasher:
         self.remote = remote
 
         # config:
-        self.num_procs = self.config.get("num_procs", 5)
+        self.num_procs = self.config.get("num_procs", 100)
         self.rest_period = self.config.get("rest_period", 100) # seconds
         self.run_time = self.config.get("run_time", 1000) # seconds
 
@@ -55,12 +56,14 @@ class ProcThrasher:
                 
             while len(procs) < self.num_procs:
                 self.log("Creating proc " + str(len(procs) + 1))
-                self.log("args are " + str(self.proc_args) + " kwargs: " + str(self.proc_kwargs))
+                kwargs = copy.copy(self.proc_kwargs)
+                kwargs['args'] = self.proc_kwargs.get('args', lambda:[])()
+                self.log("args are " + str(self.proc_args) + " kwargs: " + str(kwargs))
                 proc = None
                 try:
                     proc = self.remote.run(
                          *self.proc_args,
-                         ** self.proc_kwargs)
+                         **kwargs)
                 except:
                     proc = None
                 if proc is not None:

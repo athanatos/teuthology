@@ -219,7 +219,7 @@ class Thrasher:
             self.log(" ".join([str(x) for x in ["in_osds: ", self.in_osds, " out_osds: ", self.out_osds,
                                                 "dead_osds: ", self.dead_osds, "live_osds: ",
                                                 self.live_osds]]))
-            if random.uniform(0,1) < (float(delay) / cleanint):
+            if cleanint > 0 and random.uniform(0,1) < (float(delay) / cleanint):
                 while len(self.dead_osds) > maxdead:
                     self.revive_osd()
                 self.ceph_manager.wait_for_recovery(
@@ -367,8 +367,7 @@ class CephManager:
             else:
                 self.log(
                     "waiting on admin_socket for {osdnum}".format(
-                        osdnum=osdnum,
-                        argdict=argdict))
+                        osdnum=osdnum))
                 time.sleep(5)
 
     def set_config(self, osdnum, **argdict):

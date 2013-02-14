@@ -3,10 +3,16 @@ roles:
 interactive-on-error: true
 tasks:
 - ceph:
-    path: /home/samuelj/ceph3
+    path: /home/samuelj/ceph2
     conf:
+       global:
+         ms inject socket failures: 500
        osd:
          debug osd : 20
+         debug timer : 20
+- thrashosds:
+    chance_down: 0
+    clean_interval: 0
 - watch_notify_stress:
     clients: [client.0]
-    flags: --debug-objecter 20 --debug-ms 20 --log-to-stderr 1 --log-file /tmp/cephtest/archive/watch.out
+#    flags: --debug-objecter 20 --debug-ms 20 --log-to-stderr 1 --log-file /tmp/cephtest/archive/watch.out

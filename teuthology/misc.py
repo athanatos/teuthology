@@ -103,8 +103,8 @@ def generate_caps(type_):
             mds='allow',
             ),
         client=dict(
-            mon='allow rw',
-            osd='allow rwx pool data, allow rwx pool rbd, allow rwx pool newpool',
+            mon='allow *',
+            osd='allow *',
             mds='allow',
             ),
         )

@@ -1,6 +1,7 @@
 import contextlib
 import logging
 import proc_thrasher
+import random
 
 from ..orchestra import run
 
@@ -38,18 +39,18 @@ def task(ctx, config):
         (remote,) = ctx.cluster.only(role).remotes.iterkeys()
         remotes.append(remote)
 
-        args =['CEPH_CLIENT_ID={id_}'.format(id_=id_),
+        args = lambda x: ['CEPH_CLIENT_ID={id_}'.format(id_=id_),
                'CEPH_CONF=/tmp/cephtest/ceph.conf',
                'CEPH_ARGS="{flags}"'.format(flags=config.get('flags', '')),
                'LD_PRELOAD=/tmp/cephtest/binary/usr/local/lib/librados.so.2',
                '/tmp/cephtest/daemon-helper', 'kill',
-               '/tmp/cephtest/binary/usr/local/bin/multi_stress_watch foo foo'
+               "/tmp/cephtest/binary/usr/local/bin/ceph_multi_stress_watch foo foo%s"%(x,),
                ]
 
         log.info("args are %s" % (args,))
 
         proc = proc_thrasher.ProcThrasher({}, remote,
-            args=[run.Raw(i) for i in args],
+            args=lambda : [run.Raw(i) for i in args(random.randint(0, 100000))],
             logger=log.getChild('testwatch.{id}'.format(id=id_)),
             stdin=run.PIPE,
             wait=False

@@ -61,7 +61,7 @@ def task(ctx, config):
         '/tmp/cephtest/enable-coredump',
         '/tmp/cephtest/binary/usr/local/bin/ceph-coverage',
         '/tmp/cephtest/archive/coverage',
-        '/tmp/cephtest/binary/usr/local/bin/testrados',
+        '/tmp/cephtest/binary/usr/local/bin/ceph_test_rados',
         '--op', 'read', str(op_weights.get('read', 100)),
         '--op', 'write', str(op_weights.get('write', 100)),
         '--op', 'delete', str(op_weights.get('delete', 10)),

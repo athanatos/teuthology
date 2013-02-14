@@ -14,7 +14,9 @@ overrides:
     valgrind:
 #      osd:
 #      - --tool=memcheck
-    path: /home/samuelj/ceph
+#    path: /home/samuelj/ceph4
+    branch: wip_4042
+#    branch: master
 #    branch: next
     fs: xfs
     log-whitelist:
@@ -31,9 +33,9 @@ overrides:
         debug objecter : 20
         debug client : 20
         debug optracker : 20
-        osd max backfills : 20
-        osd recovery max chunk : 1000
-        osd recovery max active : 50
+#        osd max backfills : 20
+#        osd recovery max chunk : 1000
+#        osd recovery max active : 50
 #        filestore btrfs snap : 0
 tasks:
 - chef: null
@@ -41,6 +43,7 @@ tasks:
 - ceph: null
 - thrashosds:
     chance_down: 60
+    timeout: 1200
 #    chance_pgnum_grow: 1
 #    chance_pgpnum_fix: 1
 - rados:
