@@ -225,6 +225,7 @@ def valgrind_post(ctx, config):
 
 def mount_osd_data(ctx, remote, osd):
     log.debug('Mounting data for osd.{o} on {r}'.format(o=osd, r=remote))
+    log.debug("ctx.disk_config.remote_to_roles_to_dev: {r}".format(r=str(ctx.disk_config.remote_to_roles_to_dev)))
     if remote in ctx.disk_config.remote_to_roles_to_dev and osd in ctx.disk_config.remote_to_roles_to_dev[remote]:
         dev = ctx.disk_config.remote_to_roles_to_dev[remote][osd]
         journal = ctx.disk_config.remote_to_roles_to_journals[remote][osd]
@@ -508,7 +509,9 @@ def cluster(ctx, config):
 
     cclient.create_keyring(ctx)
     log.info('Running mkfs on osd nodes...')
+    log.debug("remote_to_roles_to_dev: {r}".format(r=str(remote_to_roles_to_devs)))
     for remote, roles_for_host in osds.remotes.iteritems():
+        log.debug("ctx.disk_config.remote_to_roles_to_dev: {r}".format(r=str(ctx.disk_config.remote_to_roles_to_dev)))
         roles_to_devs = remote_to_roles_to_devs[remote]
         roles_to_journals = remote_to_roles_to_journals[remote]
         ctx.disk_config = argparse.Namespace()
@@ -704,6 +707,8 @@ def cluster(ctx, config):
             wait=False,
             ),
         )
+
+    log.debug("ctx.disk_config.remote_to_roles_to_dev: {r}".format(r=str(ctx.disk_config.remote_to_roles_to_dev)))
 
     try:
         yield
