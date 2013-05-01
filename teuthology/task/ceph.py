@@ -503,15 +503,15 @@ def cluster(ctx, config):
     cclient.create_keyring(ctx)
     log.info('Running mkfs on osd nodes...')
     log.info("remote_to_roles_to_dev: {r}".format(r=str(remote_to_roles_to_devs)))
+    roles_to_devs = remote_to_roles_to_devs[remote]
+    roles_to_journals = remote_to_roles_to_journals[remote]
+    ctx.disk_config = argparse.Namespace()
+    ctx.disk_config.remote_to_roles_to_dev = remote_to_roles_to_devs
+    log.info("ctx.disk_config.remote_to_roles_to_dev: {r}".format(r=str(ctx.disk_config.remote_to_roles_to_dev)))
+    ctx.disk_config.remote_to_roles_to_journals = remote_to_roles_to_journals
+    ctx.disk_config.remote_to_roles_to_dev_mount_options = {}
+    ctx.disk_config.remote_to_roles_to_dev_fstype = {}
     for remote, roles_for_host in osds.remotes.iteritems():
-        roles_to_devs = remote_to_roles_to_devs[remote]
-        roles_to_journals = remote_to_roles_to_journals[remote]
-        ctx.disk_config = argparse.Namespace()
-        ctx.disk_config.remote_to_roles_to_dev = remote_to_roles_to_devs
-        log.info("ctx.disk_config.remote_to_roles_to_dev: {r}".format(r=str(ctx.disk_config.remote_to_roles_to_dev)))
-        ctx.disk_config.remote_to_roles_to_journals = remote_to_roles_to_journals
-        ctx.disk_config.remote_to_roles_to_dev_mount_options = {}
-        ctx.disk_config.remote_to_roles_to_dev_fstype = {}
 
 
         for id_ in teuthology.roles_of_type(roles_for_host, 'osd'):
