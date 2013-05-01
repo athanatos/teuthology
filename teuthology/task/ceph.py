@@ -224,7 +224,7 @@ def valgrind_post(ctx, config):
 
 
 def mount_osd_data(ctx, remote, osd):
-    log.debug('Mounting data for osd.{o} on {r}'.format(o=osd, r=remote))
+    log.info('Mounting data for osd.{o} on {r}'.format(o=osd, r=remote))
     log.info("ctx.disk_config.remote_to_roles_to_dev: {r}".format(r=str(ctx.disk_config.remote_to_roles_to_dev)))
     if remote in ctx.disk_config.remote_to_roles_to_dev and osd in ctx.disk_config.remote_to_roles_to_dev[remote]:
         dev = ctx.disk_config.remote_to_roles_to_dev[remote][osd]
