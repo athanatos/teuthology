@@ -427,7 +427,7 @@ class CephManager:
         """
         list all pool names
         """
-        out = self.raw_cluster_cmd('--', 'osd','dump','--format=json')
+        out = self.raw_cluster_cmd('osd','dump','--format=json')
         j = json.loads('\n'.join(out.split('\n')[1:]))
         self.log(j['pools'])
         return [str(i['pool_name']) for i in j['pools']]
