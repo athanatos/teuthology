@@ -804,8 +804,8 @@ class CephManager:
 
     def are_all_osds_up(self):
         x = self.get_osd_dump()
-        return (len(x.iteritems()) == \
-                    sum([(y['up'] > 0) for _, y in x.iteritems()]))
+        return (len(x) == \
+                    sum([(y['up'] > 0) for y in x]))
 
     def wait_for_all_up(self, timeout=None):
         self.log("waiting for all up")
