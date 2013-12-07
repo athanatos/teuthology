@@ -44,6 +44,7 @@ def task(ctx, config):
         id_ = role[len(PREFIX):]
         (remote,) = ctx.cluster.only(role).remotes.iterkeys()
 
+        pool = ""
         if config.get('pool', 'data') is not "data":
             proc = remote.run(
                 args=[
@@ -61,6 +62,12 @@ def task(ctx, config):
                 wait=False
                 )
             run.wait([proc])
+        else:
+            pool = ctx.manager.create_pool_with_unique_name()
+            if config.get('ec_pool', False):
+                ctx.manager.set_pool_property(
+                    pool, "debug_fake_ec_pool", 1)
+                
 
         proc = remote.run(
             args=[
@@ -103,3 +110,5 @@ def task(ctx, config):
                 wait=False
                 )
             run.wait([proc])
+        else:
+            ctx.manager.remove_pool(pool)
