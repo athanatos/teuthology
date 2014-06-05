@@ -746,11 +746,11 @@ class CephManager:
                 if rep_size is not None:
                     self.raw_cluster_cmd(
                         'osd', 'pool', 'set',
-                        pool_name, 'size', rep_size)
+                        pool_name, 'size', str(rep_size))
                 if rep_min_size is not None:
                     self.raw_cluster_cmd(
                         'osd', 'pool', 'set',
-                        pool_name, 'min_size', rep_min_size)
+                        pool_name, 'min_size', str(rep_min_size))
             self.pools[pool_name] = pg_num
             self.pools[pool_name] = pg_num
 
