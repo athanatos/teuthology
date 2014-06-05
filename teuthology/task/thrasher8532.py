@@ -38,6 +38,7 @@ def task(ctx, config):
 
     log.info("Killing all osds")
     [ctx.manager.kill_osd(i) for i in osds]
+    [ctx.manager.mark_down_osd(i) for i in osds]
 
     log.info("Waiting 10s")
     time.sleep(10)
