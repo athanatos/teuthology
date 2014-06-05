@@ -34,27 +34,30 @@ def task(ctx, config):
     
     osd_status = ctx.manager.get_osd_status()
     osds = osd_status['in']
-    random.shuffle(osds)
 
-    log.info("Killing all osds")
-    [ctx.manager.kill_osd(i) for i in osds]
-    [ctx.manager.mark_down_osd(i) for i in osds]
+    for j in range(20):
+        log.info("run %s" % (j,))
+        random.shuffle(osds)
 
-    log.info("Waiting 10s")
-    time.sleep(10)
+        log.info("Killing all osds")
+        [ctx.manager.kill_osd(i) for i in osds]
+        [ctx.manager.mark_down_osd(i) for i in osds]
 
-    def split_at(x, l):
-        return l[:x], l[x:]
-    to_revive, still_dead = split_at(2, osds)
+        log.info("Waiting 10s")
+        time.sleep(10)
 
-    log.info("Reviving the first 2 %s" % (to_revive,))
-    [ctx.manager.revive_osd(i) for i in to_revive]
+        def split_at(x, l):
+            return l[:x], l[x:]
+        to_revive, still_dead = split_at(2, osds)
 
-    log.info("Waiting 10s")
-    time.sleep(10)
+        log.info("Reviving the first 2 %s" % (to_revive,))
+        [ctx.manager.revive_osd(i) for i in to_revive]
 
-    log.info("Reviving the rest")
-    [ctx.manager.revive_osd(i) for i in still_dead]
+        log.info("Waiting 10s")
+        time.sleep(10)
+
+        log.info("Reviving the rest")
+        [ctx.manager.revive_osd(i) for i in still_dead]
 
     log.info("Waiting for clean")
     ctx.manager.wait_for_clean()
