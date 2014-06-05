@@ -47,13 +47,13 @@ def task(ctx, config):
     to_revive, still_dead = split_at(2, osds)
 
     log.info("Reviving the first 2 %s" % (to_revive,))
-    [ctx.manager.revive(i) for i in to_revive]
+    [ctx.manager.revive_osd(i) for i in to_revive]
 
     log.info("Waiting 10s")
     time.sleep(10)
 
     log.info("Reviving the rest")
-    [ctx.manager.revive(i) for i in still_dead]
+    [ctx.manager.revive_osd(i) for i in still_dead]
 
     log.info("Waiting for clean")
     ctx.manager.wait_for_clean()
