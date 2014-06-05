@@ -33,8 +33,8 @@ def task(ctx, config):
     ctx.manager.wait_for_clean()
     
     osd_status = ctx.manager.get_osd_status()
-    log.info("osd_status: %s" % (str(osd_status),))
-    osds = random.shuffle(osd_status['in'])
+    osds = osd_status['in']
+    random.shuffle(osds)
 
     log.info("Killing all osds")
     [ctx.manager.kill_osd(i) for i in osds]
