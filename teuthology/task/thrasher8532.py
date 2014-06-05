@@ -15,9 +15,9 @@ def task(ctx, config):
     """
     Attempt to reproduce the conditions of 8538
     """
-    client = config.get("client", "client.0")
     if config is None:
         config = {}
+    client = config.get("client", "client.0")
 
     (remote,) = ctx.cluster.only(client).remotes.iterkeys()
 
