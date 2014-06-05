@@ -723,7 +723,7 @@ class CephManager:
         return name
 
     def create_pool(
-            self, pool_name, pg_num=16, rep_size=None, rep_min_size=None
+            self, pool_name, pg_num=16, rep_size=None, rep_min_size=None,
             ec_pool=False, ec_m=1, ec_k=2):
         """
         Create a pool named from the pool_name parameter.
