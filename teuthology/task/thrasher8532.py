@@ -29,8 +29,11 @@ def task(ctx, config):
             ctx=ctx,
             logger=log.getChild('ceph_manager'),
             )
+
+    ctx.manager.wait_for_clean()
     
     osd_status = ctx.manager.get_osd_status()
+    log.info("osd_status: %s" % (str(osd_status),))
     osds = random.shuffle(osd_status['in'])
 
     log.info("Killing all osds")
