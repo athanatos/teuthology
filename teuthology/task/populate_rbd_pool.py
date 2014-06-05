@@ -23,6 +23,8 @@ def task(ctx, config):
           num_images: 10
           num_snaps: 3
           image_size: 10737418240
+          rep_size: 2
+          rep_min_size: 1
     """
     if config is None:
         config = {}
@@ -35,6 +37,8 @@ def task(ctx, config):
     write_size = config.get("write_size", 1024*1024)
     write_threads = config.get("write_threads", 10)
     write_total_per_snap = config.get("write_total_per_snap", 1024*1024*30)
+    rep_size = config.get("rep_size", 2)
+    rep_min_size = config.get("rep_min_size", 2)
 
     (remote,) = ctx.cluster.only(client).remotes.iterkeys()
 
@@ -50,7 +54,8 @@ def task(ctx, config):
     for poolid in range(num_pools):
         poolname = "%s-%s" % (pool_prefix, str(poolid))
         log.info("Creating pool %s" % (poolname,))
-        ctx.manager.create_pool(poolname)
+        ctx.manager.create_pool(
+            poolname, rep_size=rep_size, rep_min_size=rep_min_size)
         for imageid in range(num_images):
             imagename = "rbd-%s" % (str(imageid),)
             log.info("Creating imagename %s" % (imagename,))

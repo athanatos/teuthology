@@ -702,7 +702,9 @@ class CephManager:
         self.log(status)
         return status['pgmap']['num_pgs']
 
-    def create_pool_with_unique_name(self, pg_num=16, ec_pool=False, ec_m=1, ec_k=2):
+    def create_pool_with_unique_name(
+            self, pg_num=16, rep_size=None, rep_min_size=None,
+            ec_pool=False, ec_m=1, ec_k=2):
         """
         Create a pool named unique_pool_X where X is unique.
         """
@@ -713,12 +715,16 @@ class CephManager:
             self.create_pool(
                 name,
                 pg_num,
+                rep_size=rep_size,
+                rep_min_size=rep_min_size,
                 ec_pool=ec_pool,
                 ec_m=ec_m,
                 ec_k=ec_k)
         return name
 
-    def create_pool(self, pool_name, pg_num=16, ec_pool=False, ec_m=1, ec_k=2):
+    def create_pool(
+            self, pool_name, pg_num=16, rep_size=None, rep_min_size=None
+            ec_pool=False, ec_m=1, ec_k=2):
         """
         Create a pool named from the pool_name parameter.
         :param pool_name: name of the pool being created.
@@ -737,6 +743,15 @@ class CephManager:
                 self.raw_cluster_cmd('osd', 'pool', 'create', pool_name, str(pg_num), str(pg_num), 'erasure', 'teuthologyprofile')
             else:
                 self.raw_cluster_cmd('osd', 'pool', 'create', pool_name, str(pg_num))
+                if rep_size is not None:
+                    self.raw_cluster_cmd(
+                        'osd', 'pool', 'set',
+                        pool_name, 'size', rep_size)
+                if rep_min_size is not None:
+                    self.raw_cluster_cmd(
+                        'osd', 'pool', 'set',
+                        pool_name, 'min_size', rep_min_size)
+            self.pools[pool_name] = pg_num
             self.pools[pool_name] = pg_num
 
     def remove_pool(self, pool_name):
