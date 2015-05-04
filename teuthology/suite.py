@@ -62,6 +62,7 @@ def main(args):
 
     subset = None
     if args['--subset']:
+        # take input string '2/3' and turn into (2, 3)
         subset = tuple(map(int, args['--subset'].split('/')))
 
     name = make_run_name(suite, ceph_branch, kernel_branch, kernel_flavor,
