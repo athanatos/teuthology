@@ -80,7 +80,8 @@ class Product(Matrix):
     subsequences should move through all dimensions.
     """
     def __init__(self, item, _submats):
-        assert len(_submats) > 0
+        assert len(_submats) > 0, \
+            "Product requires child submats to be passed in"
         self.item = item
 
         submats = sorted(
@@ -117,7 +118,8 @@ class Product(Matrix):
         be distinct from the previous ones resulting in lmat.size() *
         rmat.size() combinations.
         """
-        assert len(submats) > 0
+        assert len(submats) > 0, \
+            "_index requires non-empty submats"
         if len(submats) == 1:
             return frozenset([submats[0][1].index(i)])
 
@@ -169,7 +171,8 @@ class Sum(Matrix):
     We want to mix the subsequences proportionately to their size.
     """
     def __init__(self, item, _submats):
-        assert len(_submats) > 0
+        assert len(_submats) > 0, \
+            "Sum requires non-empty _submats"
         self.item = item
 
         submats = sorted(
@@ -200,7 +203,8 @@ class Sum(Matrix):
         want to mix an M item into the stream every N / M items.  Once we run
         out of N, we want to simply finish the M stream.
         """
-        assert len(submats) > 0
+        assert len(submats) > 0, \
+            "_index requires non-empty submats"
         if len(submats) == 1:
             return submats[0][1].index(_i)
         lmat = submats[0][1]
