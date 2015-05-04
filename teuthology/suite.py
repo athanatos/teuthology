@@ -785,8 +785,8 @@ def _build_matrix(path, _isfile=os.path.isfile,
     if _isfile(path):
         if path.endswith('.yaml'):
             return matrix.Base(item)
-        assert False
-        return []
+        assert False, "Invalid file seen in _build_matrix"
+        return None
     if _isdir(path):
         files = sorted(_listdir(path))
         if '+' in files:
@@ -835,8 +835,8 @@ def _build_matrix(path, _isfile=os.path.isfile,
                         submat)
                 submats.append(submat)
             return matrix.Sum(item, submats)
-    assert False
-    return []
+    assert False, "Invalid path seen in _build_matrix"
+    return None
 
 
 def get_arch(machine_type):
