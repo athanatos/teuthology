@@ -776,8 +776,6 @@ def build_matrix(path, _isfile=os.path.isfile,
         first = 0
         mat = _build_matrix(path, _isfile, _isdir, _listdir)
         matlimit = mat.size()
-
-    print mat.size(), first, matlimit
     return generate_combinations(path, mat, first, matlimit)
 
 def _build_matrix(path, _isfile=os.path.isfile,
