@@ -301,7 +301,7 @@ def fake_isfile(path):
 
     :param path: A string representing a path
     """
-    print path
+    assert False
     if path.endswith('.yaml'):
         return True
     if 'forcefile' in path:
