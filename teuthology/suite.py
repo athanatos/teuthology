@@ -830,6 +830,7 @@ def _build_matrix(path, _isfile=os.path.isfile,
                     _listdir,
                     mincyclicity,
                     fn)
+                assert submat is not None
                 if submat is None:
                     continue
                 if submat.cyclicity() < mincyclicity:
@@ -837,7 +838,6 @@ def _build_matrix(path, _isfile=os.path.isfile,
                         int(math.ceil(
                             mincyclicity / submat.cyclicity())),
                         submat)
-                assert submat is not None
                 submats.append(submat)
             return matrix.Sum(item, submats)
     assert False, "Invalid path seen in _build_matrix"
