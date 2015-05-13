@@ -302,8 +302,8 @@ def make_fake_fstools(fake_filesystem):
         for component in components:
             if component not in subdict:
                 raise OSError(
-                    '[Errno 2] No such file or directory: %s' % next_dir)
-            subdict = subdict.get(next_dir)
+                    '[Errno 2] No such file or directory: %s' % component)
+            subdict = subdict.get(component)
         if subdict is None:
             return True
         else:
