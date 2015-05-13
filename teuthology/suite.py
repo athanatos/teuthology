@@ -815,6 +815,7 @@ def _build_matrix(path, _isfile=os.path.isfile,
                     _listdir,
                     mincyclicity=0,
                     item=fn)
+                assert submat is not None
                 if submat is not None:
                     submats.append(submat)
             return matrix.Product(item, submats)
