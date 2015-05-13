@@ -303,7 +303,8 @@ def fake_isfile(path):
     """
     if path.endswith('.yaml'):
         return True
-    if path.split('/')[-1].startswith('forcefile'):
+    if 'forcefile' in path:
+        assert False
         return True
     if path.endswith('+') or path.endswith('%'):
         return True
