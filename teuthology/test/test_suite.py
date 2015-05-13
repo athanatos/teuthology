@@ -303,6 +303,8 @@ def fake_isfile(path):
     """
     if path.endswith('.yaml'):
         return True
+    if path.startswith('forcefile'):
+        return True
     if path.endswith('+') or path.endswith('%'):
         return True
     return False
@@ -539,16 +541,9 @@ class TestBuildMatrix(object):
                         'vps_rhel6.5.yaml': None,
                         'vps_rhel7.0.yaml': None,
                         'vps_ubuntu14.04.yaml': None,
-                        'vps_ubuntu14.04.yaml.disable': None,
-                        'vps_ubuntu14.04.yaml.anotherextension': None,
                     },
                     'tasks': {
                         'teuthology.yaml': None,
-                        'vps_ubuntu14.04notyaml': None,
-                    },
-                    'tasks.disable': {
-                        'teuthology2.yaml': None,
-                        'vps_ubuntu14.04notyaml': None,
                     },
                     'empty': {},
                 },
@@ -609,16 +604,16 @@ class TestBuildMatrix(object):
                         'vps_rhel6.5.yaml': None,
                         'vps_rhel7.0.yaml': None,
                         'vps_ubuntu14.04.yaml': None,
-                        'vps_ubuntu14.04.yaml.disable': None,
-                        'vps_ubuntu14.04.yaml.anotherextension': None,
+                        'forcefilevps_ubuntu14.04.yaml.disable': None,
+                        'forcefilevps_ubuntu14.04.yaml.anotherextension': None,
                     },
                     'tasks': {
                         'teuthology.yaml': None,
-                        'vps_ubuntu14.04notyaml': None,
+                        'forcefilevps_ubuntu14.04notyaml': None,
                     },
                     'tasks.disable': {
                         'teuthology2.yaml': None,
-                        'vps_ubuntu14.04notyaml': None,
+                        'forcefilevps_ubuntu14.04notyaml': None,
                     },
                 },
             },
