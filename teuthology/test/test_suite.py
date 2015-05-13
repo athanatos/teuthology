@@ -611,6 +611,7 @@ class TestBuildMatrix(object):
                         'teuthology.yaml': None,
                         'forcefilevps_ubuntu14.04notyaml': None,
                     },
+                    'forcefilevps_ubuntu14.04notyaml': None,
                     'tasks.disable': {
                         'teuthology2.yaml': None,
                         'forcefilevps_ubuntu14.04notyaml': None,
