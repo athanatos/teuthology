@@ -780,7 +780,6 @@ def build_matrix(path, _isfile=os.path.isfile,
 
 def _build_matrix(path, _isfile=os.path.isfile,
                   _isdir=os.path.isdir, _listdir=os.listdir, mincyclicity=0, item=''):
-    assert False
     if _isfile(path):
         if path.endswith('.yaml'):
             return matrix.Base(item)
