@@ -297,7 +297,7 @@ def make_fake_fstools(fake_filesystem):
         if fsdict is False:
             fsdict = fake_filesystem
 
-        components = path.split.strip('/').split('/')
+        components = path.strip('/').split('/')
         subdict = fsdict
         for component in components:
             if component not in subdict:
