@@ -1,0 +1,91 @@
+interactive-on-error: true
+overrides:
+  admin_socket:
+    branch: wip-sam-working
+  ceph:
+    conf:
+      global:
+        ms inject delay max: 1
+        ms inject delay probability: 0.005
+        ms inject delay type: osd
+        ms inject internal delays: 0.002
+        ms inject socket failures: 2500
+        debug objecter: 20
+        debug ms: 1
+#        osd_max_pg_log_entries: 20
+#        osd_min_pg_log_entries: 10
+#        osd_pool_default_min_size: 2
+#        osd_pool_default_size: 3
+      mon:
+        debug mon: 20
+        debug ms: 1
+        debug paxos: 20
+      osd:
+        debug filestore: 20
+        debug journal: 20
+        debug ms: 1
+        debug osd: 20
+        osd sloppy crc: true
+    fs: xfs
+    log-whitelist:
+    - slow request
+    branch: wip-sam-working
+  ceph-deploy:
+    branch:
+      dev: wip-sam-working
+    conf:
+      client:
+        log file: /var/log/ceph/ceph-$name.$pid.log
+      mon:
+        debug mon: 1
+        debug ms: 20
+        debug paxos: 20
+        osd default pool size: 2
+  install:
+    ceph:
+      branch: wip-sam-working
+  workunit:
+    branch: wip-sam-working
+owner: scheduled_samuelj@slider
+roles:
+- - mon.a
+  - mon.c
+  - osd.0
+  - osd.1
+  - osd.2
+  - client.0
+- - mon.b
+  - osd.3
+  - osd.4
+  - osd.5
+  - client.1
+tasks:
+- chef: null
+- clock.check: null
+- install: null
+- ceph:
+    conf:
+      osd:
+        osd max backfills: 1
+    log-whitelist:
+    - wrongly marked me down
+    - objects unfound and apparently lost
+- thrashosds:
+    chance_pgnum_grow: 3
+    chance_pgpnum_fix: 1
+    timeout: 1200
+- rados:
+    clients:
+    - client.0
+    objects: 50
+    op_weights:
+      copy_from: 50
+      delete: 50
+      read: 100
+      rollback: 50
+      snap_create: 50
+      snap_remove: 50
+      write: 100
+    ops: 4000
+    pool_snaps: true
+verbose: true

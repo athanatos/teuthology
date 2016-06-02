@@ -1,0 +1,72 @@
+interactive-on-error: true
+overrides:
+  admin_socket:
+    branch: wip-sam-firefly-as
+  ceph:
+    conf:
+#      global:
+#        ms inject socket failures: 5000
+      mon:
+        debug mon: 20
+        debug ms: 1
+        debug paxos: 20
+      osd:
+        debug filestore: 20
+#        debug journal: 20
+        debug ms: 1
+        debug osd: 20
+#        osd max pg log entries: 14
+#        osd min pg log entries: 10
+    fs: xfs
+    log-whitelist:
+    - slow request
+    - must scrub before tier agent can activate
+    sha1: 4c4f35e9099313ca5f86dec4f1ea045513d9648b
+  ceph-deploy:
+    branch:
+      dev: wip-sam-firefly-as
+    conf:
+      client:
+        log file: /var/log/ceph/ceph-$name.$pid.log
+      mon:
+        debug mon: 1
+        debug ms: 20
+        debug paxos: 20
+        osd default pool size: 2
+  install:
+    ceph:
+      branch: wip-sam-firefly-as
+  s3tests:
+    branch: master
+  workunit:
+    branch: wip-sam-firefly-as
+roles:
+- - mon.a
+  - osd.0
+  - osd.1
+  - client.0
+- - mon.b
+  - osd.2
+  - osd.3
+  - client.1
+  - mon.c
+tasks:
+- install:
+- ceph:
+#- interactive:
+- exec:
+    client.0:
+    - ceph osd pool create base 4
+- rados:
+    clients:
+    - client.0
+    objects: 256
+    object_size: 64
+    max_in_flight: 64
+    op_weights:
+      rollback: 50
+      snap_create: 50
+    ops: 4000
+    pools:
+    - base
+verbose: false

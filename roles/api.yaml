@@ -1,0 +1,71 @@
+overrides:
+  admin_socket:
+    branch: wip-sam-working
+  ceph:
+    conf:
+      mon:
+        debug mon: 20
+        debug ms: 1
+        debug paxos: 20
+      osd:
+        debug filestore: 20
+        debug journal: 20
+        debug ms: 1
+        debug osd: 20
+        osd op thread timeout: 60
+        osd sloppy crc: true
+    fs: xfs
+    log-whitelist:
+    - slow request
+    sha1: 86a15cb789576ae62ff2ad3ed2c12db99fb633ed
+  ceph-deploy:
+    branch:
+      dev: wip-sam-working
+    conf:
+      client:
+        log file: /var/log/ceph/ceph-$name.$pid.log
+      mon:
+        debug mon: 1
+        debug ms: 20
+        debug paxos: 20
+        osd default pool size: 2
+  install:
+    ceph:
+      branch: wip-sam-working
+  s3tests:
+    branch: master
+  workunit:
+    branch: wip-sam-working
+owner: scheduled_samuelj@slider
+roles:
+- - mon.a
+  - mds.a
+  - osd.0
+  - osd.1
+- - mon.b
+  - mds.a-s
+  - mon.c
+  - osd.2
+  - osd.3
+- - client.0
+tasks:
+- chef: null
+- clock.check: null
+- install: null
+- ceph:
+    fs: ext4
+    log-whitelist:
+    - wrongly marked me down
+    - objects unfound and apparently lost
+- thrashosds:
+    chance_pgnum_grow: 2
+    chance_pgpnum_fix: 1
+    timeout: 1200
+- workunit:
+    clients:
+      client.0:
+      - rados/test.sh
+teuthology_branch: master
+tube: multi
+verbose: false
+

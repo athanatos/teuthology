@@ -1,0 +1,84 @@
+overrides:
+  admin_socket:
+    branch: wip-sam-working
+  ceph:
+    conf:
+      global:
+        osd pool default min size: 2
+        osd pool default size: 2
+#        ms inject socket failures: 5000
+        osd min pg log entries: 100
+        osd max pg log entries: 200
+      mon:
+        debug mon: 20
+        debug ms: 1
+        debug paxos: 20
+      osd:
+#        debug filestore: 20
+#        debug journal: 20
+        debug ms: 1
+        debug osd: 20
+        debug filestore: 20
+    fs: xfs
+    log-whitelist:
+    - slow request
+    - must scrub before tier agent can activate
+    sha1: 4c4f35e9099313ca5f86dec4f1ea045513d9648b
+    dump_pglogs: true
+  ceph-deploy:
+    branch:
+      dev: wip-sam-working
+    conf:
+      client:
+        log file: /var/log/ceph/ceph-$name.$pid.log
+      mon:
+        debug mon: 1
+        debug ms: 20
+        debug paxos: 20
+        osd default pool size: 2
+  install:
+    ceph:
+      branch: wip-sam-working
+  s3tests:
+    branch: master
+  workunit:
+    branch: wip-sam-working
+roles:
+- - mon.a
+  - osd.0
+  - osd.1
+  - osd.2
+  - client.0
+- - mon.b
+  - osd.4
+  - osd.3
+  - osd.5
+  - client.1
+  - mon.c
+tasks:
+#- chef: null
+#- clock.check: null
+- install: null
+- ceph:
+    log-whitelist:
+    - wrongly marked me down
+    - objects unfound and apparently lost
+- thrashosds:
+    chance_down: 40
+- rados:
+    clients:
+    - client.0
+    objects: 50
+    op_weights:
+      write: 100
+      copy_from: 50
+      delete: 50
+      read: 100
+      rmattr: 25
+      rollback: 50
+      setattr: 25
+      snap_create: 50
+      snap_remove: 50
+    ops: 4000
+
+verbose: false

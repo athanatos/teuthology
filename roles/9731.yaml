@@ -1,0 +1,33 @@
+machine_type: plana,burnupi,mira
+nuke-on-error: true
+overrides:
+  admin_socket: {branch: master}
+  ceph:
+    conf:
+      global: {osd heartbeat grace: 40}
+      osd: {osd op thread timeout: 60}
+    fs: xfs
+    log-whitelist: [slow request]
+    valgrind:
+      mds: [--tool=memcheck]
+      mon: [--tool=memcheck]
+      osd: [--tool=memcheck]
+  install:
+    ceph: {branch: wip-9731}
+  rgw: {ec-data-pool: true}
+roles:
+- [mon.a, osd.0, osd.1, osd.2, client.0]
+- [mds.a, osd.3, osd.4, osd.5, client.1]
+suite: rgw
+tasks:
+- {install: null}
+- {ceph: null}
+- thrashosds:
+    chance_down: 0.90
+- pexec:
+    client.0:
+    - rbd create foo --size 100
+    - rbd bench-write foo --io-pattern rand --io-total 40960000
+    client.1:
+    - rbd create bar --size 100
+    - rbd bench-write bar --io-pattern rand --io-total 40960000

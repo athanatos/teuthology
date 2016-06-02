@@ -1,0 +1,50 @@
+overrides:
+  admin_socket:
+    branch: wip-giant-old-sam
+  ceph:
+    conf:
+      mon:
+        debug mon: 0
+        debug ms: 0
+        debug paxos: 0
+      osd:
+        debug filestore: 0
+        debug journal: 0
+        debug ms: 0
+        debug osd: 0
+        osd sloppy crc: false
+    fs: xfs
+    log-whitelist:
+    - slow request
+    - must scrub before tier agent can activate
+    branch: wip-giant-old-sam
+  ceph-deploy:
+    branch:
+      dev: wip-giant-old-sam
+    conf:
+      client:
+        log file: /var/log/ceph/ceph-$name.$pid.log
+      mon:
+        debug mon: 0
+        debug ms: 0
+        debug paxos: 0
+        osd default pool size: 2
+  install:
+    ceph:
+      branch: wip-giant-old-sam
+  s3tests:
+    branch: master
+  workunit:
+    branch: wip-giant-old-sam
+roles:
+- - mon.a
+  - osd.0
+#  - mon.b
+#  - osd.1
+#  - mon.c
+#  - osd.2
+tasks:
+- install: null
+#- ceph: null
+- interactive: null
+verbose: true

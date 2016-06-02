@@ -1,0 +1,35 @@
+overrides:
+  ceph:
+    conf:
+      mon:
+        debug mon: 20
+        debug ms: 1
+        debug paxos: 20
+      osd:
+        debug filestore: 20
+        debug journal: 20
+        debug ms: 1
+        debug osd: 20
+        osd op thread timeout: 60
+        osd sloppy crc: true
+    fs: xfs
+    log-whitelist:
+    - slow request
+    branch: wip-sam-testing
+  install:
+    ceph:
+      branch: wip-sam-testing
+roles:
+- - mon.a
+  - mds.a
+  - osd.0
+  - osd.1
+  - mon.b
+  - mds.a-s
+  - mon.c
+  - osd.2
+  - osd.3
+  - client.0
+tasks:
+- install: null
+- interactive: null

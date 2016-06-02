@@ -1,0 +1,47 @@
+overrides:
+  admin_socket:
+    branch: dumpling
+  ceph:
+    conf:
+      mon:
+        debug mon: 20
+        debug ms: 1
+        debug paxos: 20
+      osd:
+        debug filestore: 20
+        debug journal: 20
+        debug ms: 1
+        debug osd: 20
+    log-whitelist:
+    - slow request
+    sha1: 77dfbbaccfb5074899d02314a26cb9ac46a69106
+  ceph-deploy:
+    branch:
+      dev: dumpling
+    conf:
+      client:
+        log file: /var/log/ceph/ceph-$name.$pid.log
+      mon:
+        debug mon: 1
+        debug ms: 20
+        debug paxos: 20
+        osd default pool size: 2
+  install:
+    ceph:
+      sha1: 77dfbbaccfb5074899d02314a26cb9ac46a69106
+  workunit:
+    sha1: 77dfbbaccfb5074899d02314a26cb9ac46a69106
+roles:
+- - mon.0
+  - osd.0
+  - osd.1
+  - mds.a
+  - client.0
+sha1: 77dfbbaccfb5074899d02314a26cb9ac46a69106
+tasks:
+- chef: null
+- clock.check: null
+- install: null
+- ceph: null
+- filestore_idempotent: null
+verbose: true
